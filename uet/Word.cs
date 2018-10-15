@@ -1,7 +1,5 @@
 using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace uet_dictionary {
     public class Word {

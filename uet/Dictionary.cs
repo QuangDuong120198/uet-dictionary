@@ -1,8 +1,10 @@
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 
 namespace uet_dictionary {
@@ -34,10 +36,31 @@ namespace uet_dictionary {
                 t.Close();
             }
         }
-        public static void Insert(Word _word) {
+        public static void Write(Word _word) {
             List<Word> _list = Dictionary.list;
-            _list.Add(_word);
-            Dictionary.list = _list;
+            if (new Regex(@"^[A-Za-z]+$").IsMatch(_word.InEnglish)) {
+                if (!new Regex(@"^\s|\s$|\d").IsMatch(_word.InVietnamese)) {
+                    // chuyển thành chữ in thường
+                    _word.InEnglish = _word.InEnglish.ToLower();
+                    _word.InVietnamese = _word.InVietnamese.ToLower();
+                    /* Có 2 tình huống có thể xảy ra
+                     * 1. Từ vừa nhập chưa có -> thêm vào
+                     * 2. Từ vừa nhập đã có
+                     */
+                    if (!Dictionary.list.Exists(item => item.InEnglish == _word.InEnglish)) {
+                        _list.Add(_word);
+                        Dictionary.list = _list;
+                    } else {
+                        _list[Dictionary.list.FindIndex(item => item.InEnglish == _word.InEnglish)] = _word;
+                        Dictionary.list = _list;
+                    }
+                    Console.WriteLine("Đã thêm từ mới");
+                } else {
+                    Console.WriteLine("Từ không được bắt đầu bằng khoảng trắng, không chứa chữ số");
+                }
+            } else {
+                Console.WriteLine("Chỉ sử dụng kí tự chữ cái");
+            }
         }
     }
 }

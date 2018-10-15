@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.IO;
-using Newtonsoft.Json;
 
 namespace uet_dictionary
 {
@@ -11,7 +6,7 @@ namespace uet_dictionary
     {
         public static void Main(string[] args)
         {
-            DictionaryManager.InsertFromCommandLine();
+            DictionaryManager.ShowAllWords();
         }
     }
 }
