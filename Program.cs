@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace uet_dictionary
 {
@@ -6,7 +7,31 @@ namespace uet_dictionary
     {
         public static void Main(string[] args)
         {
-            DictionaryManager.ShowAllWords();
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.InputEncoding = Encoding.Unicode;
+            Console.WriteLine("Từ điển");
+            Console.WriteLine("1. Thêm từ mới");
+            Console.WriteLine("2. Hiển thị toàn bộ từ điển");
+            Console.WriteLine("3. Tìm kiếm");
+            Console.WriteLine("4. Xuất file");
+            Console.Write("Chọn tính năng: ");
+
+            int feature = int.Parse(Console.ReadLine());
+
+            switch(feature) {
+                case 2:
+                    DictionaryManager.ShowAllWords();
+                    break;
+                case 3:
+                    DictionaryManager.Search();
+                    break;
+                case 4:
+                    DictionaryManager.Export();
+                    break;
+                default:
+                    DictionaryManager.InsertFromCommandLine();
+                    break;
+            }
         }
     }
 }

@@ -1,5 +1,8 @@
 using System;
 using System.Text;
+using System.Linq;
+using System.IO;
+using Newtonsoft.Json;
 
 namespace uet_dictionary {
     public class DictionaryManager {
@@ -28,6 +31,28 @@ namespace uet_dictionary {
             Dictionary.list.ForEach(item => {
                 Console.WriteLine($"{item.InEnglish}: {item.InVietnamese}");
             });
+        }
+
+        public static void Search() {
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.InputEncoding = Encoding.Unicode;
+            Console.Write("Nhập từ tìm kiếm: ");
+            string _query = Console.ReadLine();
+            Dictionary.list
+                .Where(item => item.InEnglish.StartsWith(_query.ToLower()))
+                .ToList()
+                .ForEach(item => {
+                    Console.WriteLine($"{item.InEnglish}: {item.InVietnamese}");
+                });
+        }
+
+        public static void Export() {
+            string filepath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "dictionary.txt");
+            TextWriter t = new StreamWriter(filepath);
+            t.WriteLine(JsonConvert.SerializeObject(Dictionary.list, Formatting.Indented));
+            t.Flush();
+            t.Close();
+            Console.WriteLine($"Đã xuất ra file {filepath}");
         }
     }
 }

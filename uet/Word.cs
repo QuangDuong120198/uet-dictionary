@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 namespace uet_dictionary {
     public class Word {
