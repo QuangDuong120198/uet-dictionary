@@ -18,19 +18,16 @@ namespace uet_dictionary {
             Console.Write(">>> Nhập vào nghĩa tiếng Việt: ");
             Vietnamese = Console.ReadLine();
 
-            Word w = new Word() {
-                InEnglish = English,
-                InVietnamese = Vietnamese
-            };
-
-            Dictionary.Write(w);
+            Dictionary.Write(new Word(English, Vietnamese));
         }
 
         public static void ShowAllWords() {
             Console.OutputEncoding = Encoding.Unicode;
-            Dictionary.list.ForEach(item => {
-                Console.WriteLine($"{item.InEnglish}: {item.InVietnamese}");
-            });
+            if (Dictionary.list.Count > 0) {
+                Dictionary.list.ForEach(item => {
+                    Console.WriteLine($"{item.InEnglish}: {item.InVietnamese}");
+                });
+            }
         }
 
         public static void Search() {

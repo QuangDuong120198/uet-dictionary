@@ -9,20 +9,40 @@ using Newtonsoft.Json;
 namespace uet_dictionary {
     public class Dictionary {
         static Dictionary() {
+            /* 
+             * Phương thức khởi tạo tĩnh.
+             * Kiểm tra xem đã có file .json chưa, nếu chưa có thì tạo
+             * Ngược lại, nếu đã có thì kiểm tra nội dung file có đúng định dạng không
+             */
             string path = Directory.GetCurrentDirectory();
-            string filename = Path.Combine(path, "test.json");
+            string filename = Path.Combine(path, "db.json");
 
             if (!File.Exists(filename)) {
                 File.Create(filename);
-                TextWriter t = new StreamWriter(filename);
-                t.WriteLine("[]");
-                t.Close();
+                TextWriter writer = new StreamWriter(filename);
+                writer.WriteLine("[]");
+                writer.Close();
+            } else {
+                List<Word> list = null;
+                TextReader reader = new StreamReader(filename);
+                string content = reader.ReadToEnd();
+                try {
+                    list = JsonConvert.DeserializeObject<List<Word>>("{}");
+                } catch (JsonSerializationException exception) when (list == null) {
+                    exception.Message.ToString();
+                    reader.Close();
+                    TextWriter writer = new StreamWriter(filename);
+                    writer.WriteLine("[]");
+                    writer.Close();
+                } finally {
+                    reader.Close();
+                }
             }
         }
         public static List<Word> list { 
             get {
                 string path = Directory.GetCurrentDirectory();
-                string filename = Path.Combine(path, "test.json");
+                string filename = Path.Combine(path, "db.json");
 
                 TextReader t = new StreamReader(filename);
                 string content = t.ReadToEnd();
@@ -32,10 +52,11 @@ namespace uet_dictionary {
                 return _list;
             } set {
                 string path = Directory.GetCurrentDirectory();
-                string filename = Path.Combine(path, "test.json");
+                string filename = Path.Combine(path, "db.json");
 
                 TextWriter t = new StreamWriter(filename);
                 t.WriteLine(JsonConvert.SerializeObject(value, Formatting.Indented));
+                t.Flush();
                 t.Close();
             }
         }
