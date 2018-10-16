@@ -27,8 +27,8 @@ namespace uet_dictionary {
                 TextReader reader = new StreamReader(filename);
                 string content = reader.ReadToEnd();
                 try {
-                    list = JsonConvert.DeserializeObject<List<Word>>("{}");
-                } catch (JsonSerializationException exception) when (list == null) {
+                    list = JsonConvert.DeserializeObject<List<Word>>(content);
+                } catch (JsonSerializationException exception) {
                     exception.Message.ToString();
                     reader.Close();
                     TextWriter writer = new StreamWriter(filename);
@@ -55,7 +55,7 @@ namespace uet_dictionary {
                 string filename = Path.Combine(path, "db.json");
 
                 TextWriter t = new StreamWriter(filename);
-                t.WriteLine(JsonConvert.SerializeObject(value, Formatting.Indented));
+                t.WriteLine(JsonConvert.SerializeObject(value.OrderBy(item => item.InEnglish), Formatting.Indented));
                 t.Flush();
                 t.Close();
             }
@@ -71,13 +71,8 @@ namespace uet_dictionary {
                      * 1. Từ vừa nhập chưa có -> thêm vào
                      * 2. Từ vừa nhập đã có
                      */
-                    if (!Dictionary.list.Exists(item => item.InEnglish == _word.InEnglish)) {
-                        _list.Add(_word);
-                        Dictionary.list = _list;
-                    } else {
-                        _list[Dictionary.list.FindIndex(item => item.InEnglish == _word.InEnglish)] = _word;
-                        Dictionary.list = _list;
-                    }
+                    _list.Add(_word);
+                    Dictionary.list = _list;
                     Console.WriteLine("Đã thêm từ mới!");
                 } else {
                     Console.WriteLine("Từ không được bắt đầu bằng khoảng trắng, không chứa chữ số");
