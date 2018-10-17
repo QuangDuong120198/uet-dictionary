@@ -8,8 +8,42 @@ using Newtonsoft.Json;
 
 namespace UetDictionaryCLI {
     public class Dictionary {
+        // fields
+        public static List<Word> list { 
+            get {
+                string path = Directory.GetCurrentDirectory();
+                string filename = Path.Combine(path, "db.json");
+
+                TextReader reader = new StreamReader(filename);
+                string content = reader.ReadToEnd();
+                List<Word> _list = JsonConvert.DeserializeObject<List<Word>>(content);
+                reader.Close();
+
+                return _list;
+            } set {
+                string path = Directory.GetCurrentDirectory();
+                string filename = Path.Combine(path, "db.json");
+
+                TextWriter writer = new StreamWriter(filename);
+                writer.WriteLine(
+                    JsonConvert.SerializeObject(
+                        value.OrderBy(item => item.InEnglish)
+                        .GroupBy(item => new {
+                            item.InEnglish,
+                            item.InVietnamese
+                        })
+                        .Select(item => item.First())
+                        .ToList(),
+                        Formatting.Indented
+                    )
+                );
+                writer.Flush();
+                writer.Close();
+            }
+        }
+        // methods
         static Dictionary() {
-            /* 
+            /*
              * Phương thức khởi tạo tĩnh.
              * Kiểm tra xem đã có file .json chưa, nếu chưa có thì tạo
              * Ngược lại, nếu đã có thì kiểm tra nội dung file có đúng định dạng không
@@ -45,27 +79,6 @@ namespace UetDictionaryCLI {
                 }
             }
         }
-        public static List<Word> list { 
-            get {
-                string path = Directory.GetCurrentDirectory();
-                string filename = Path.Combine(path, "db.json");
-
-                TextReader t = new StreamReader(filename);
-                string content = t.ReadToEnd();
-                List<Word> _list = JsonConvert.DeserializeObject<List<Word>>(content);
-                t.Close();
-
-                return _list;
-            } set {
-                string path = Directory.GetCurrentDirectory();
-                string filename = Path.Combine(path, "db.json");
-
-                TextWriter t = new StreamWriter(filename);
-                t.WriteLine(JsonConvert.SerializeObject(value.OrderBy(item => item.InEnglish).Distinct(), Formatting.Indented));
-                t.Flush();
-                t.Close();
-            }
-        }
         public static void Write(Word _word) {
             List<Word> _list = Dictionary.list;
             if (new Regex(@"^[A-Za-z]+$").IsMatch(_word.InEnglish)) {
@@ -78,7 +91,7 @@ namespace UetDictionaryCLI {
                      * 2. Từ vừa nhập đã có
                      */
                     _list.Add(_word);
-                    Dictionary.list = _list;
+                    Dictionary.list = _list.Distinct().ToList();
                     Console.WriteLine("Đã thêm từ mới!");
                 } else {
                     Console.WriteLine("Từ không được bắt đầu bằng khoảng trắng, không chứa chữ số");

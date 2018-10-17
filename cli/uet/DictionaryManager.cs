@@ -70,6 +70,10 @@ namespace UetDictionaryCLI {
                     ParseContent = JsonConvert.DeserializeObject<List<Word>>(content);
                 } catch (JsonSerializationException exception) {
                     exception.Message.ToString();
+                    Console.WriteLine("File không đúng định dạng");
+                } catch (IOException exception) {
+                    exception.Message.ToString();
+                    Console.WriteLine("File đang được sử dụng");
                 } finally {
                     if (ParseContent == null) {
                         Console.WriteLine("File không đúng định dạng");
