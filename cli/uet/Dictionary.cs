@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 
-namespace uet_dictionary {
+namespace UetDictionaryCLI {
     public class Dictionary {
         static Dictionary() {
             /* 
@@ -35,6 +35,12 @@ namespace uet_dictionary {
                     writer.WriteLine("[]");
                     writer.Close();
                 } finally {
+                    if (list == null) {
+                        reader.Close();
+                        TextWriter writer = new StreamWriter(filename);
+                        writer.WriteLine("[]");
+                        writer.Close();
+                    }
                     reader.Close();
                 }
             }
@@ -55,7 +61,7 @@ namespace uet_dictionary {
                 string filename = Path.Combine(path, "db.json");
 
                 TextWriter t = new StreamWriter(filename);
-                t.WriteLine(JsonConvert.SerializeObject(value.OrderBy(item => item.InEnglish), Formatting.Indented));
+                t.WriteLine(JsonConvert.SerializeObject(value.OrderBy(item => item.InEnglish).Distinct(), Formatting.Indented));
                 t.Flush();
                 t.Close();
             }

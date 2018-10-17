@@ -1,6 +1,6 @@
 using System;
 
-namespace uet_dictionary {
+namespace UetDictionaryCLI {
     public class Word {
         public string InEnglish { get; set; }
         public string InVietnamese { get; set; }

@@ -1,10 +1,11 @@
 using System;
 using System.Text;
+using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace uet_dictionary {
+namespace UetDictionaryCLI {
     public class DictionaryManager {
         public static void InsertFromCommandLine() {
             string English, Vietnamese;
@@ -23,10 +24,14 @@ namespace uet_dictionary {
 
         public static void ShowAllWords() {
             Console.OutputEncoding = Encoding.Unicode;
-            if (Dictionary.list.Count > 0) {
-                Dictionary.list.ForEach(item => {
-                    Console.WriteLine($"{item.InEnglish}: {item.InVietnamese}");
-                });
+            try {
+                if (Dictionary.list.Count > 0) {
+                    Dictionary.list.ForEach(item => {
+                        Console.WriteLine($"{item.InEnglish}: {item.InVietnamese}");
+                    });
+                }
+            } catch (NullReferenceException exception) {
+                exception.Message.ToString();
             }
         }
 
@@ -51,6 +56,34 @@ namespace uet_dictionary {
             t.Close();
             Console.WriteLine($"Đã xuất ra file {filepath}");
         }
+
+        public static void Import() {
+            Console.OutputEncoding = Encoding.Unicode;
+            Console.InputEncoding = Encoding.Unicode;
+            Console.WriteLine("Nhập tên file");
+            string filepath = Console.ReadLine();
+            if (File.Exists(filepath)) {
+                TextReader reader = new StreamReader(filepath);
+                string content = reader.ReadToEnd();
+                List<Word> ParseContent = null;
+                try {
+                    ParseContent = JsonConvert.DeserializeObject<List<Word>>(content);
+                } catch (JsonSerializationException exception) {
+                    exception.Message.ToString();
+                } finally {
+                    if (ParseContent == null) {
+                        Console.WriteLine("File không đúng định dạng");
+                    } else {
+                        ParseContent.ForEach(item => {
+                            Dictionary.Write(item);
+                        });
+                    }
+                }
+            } else {
+                Console.WriteLine("File này không tồn tại");
+            }
+        }
+
     }
 }
 

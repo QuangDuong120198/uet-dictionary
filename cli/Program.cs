@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace uet_dictionary
+namespace UetDictionaryCLI
 {
     public class Program
     {
@@ -17,6 +17,7 @@ namespace uet_dictionary
             Console.WriteLine("2. Hiển thị toàn bộ từ điển");
             Console.WriteLine("3. Tìm kiếm");
             Console.WriteLine("4. Xuất file");
+            Console.WriteLine("5. Nhập từ file");
             Console.Write("Chọn tính năng: ");
 
             int feature = int.Parse(Console.ReadLine());
@@ -30,6 +31,9 @@ namespace uet_dictionary
                     break;
                 case 4:
                     DictionaryManager.Export();
+                    break;
+                case 5:
+                    DictionaryManager.Import();
                     break;
                 default:
                     DictionaryManager.InsertFromCommandLine();

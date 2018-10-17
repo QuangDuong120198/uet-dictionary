@@ -9,10 +9,26 @@ Bài tập lớn môn "Lập trình hướng đối tượng": Làm ứng dụng
 ```shell
 git clone https://github.com/QuangDuong120198/uet-dictionary.git
 ```
-* Mở Command Prompt/Terminal, di chuyển vào thư mục chứa repo vừa clone về và gõ các lệnh sau
-```shell
-# compile ra bin/ và obj/
-dotnet build
-# chạy ứng dụng
-dotnet run
-```
+* Repo bao gồm hai phần: từ điển trên CLI và từ điển trên WEB.
+* Đối với CLI:
+    * Mở Command Prompt/Terminal, gõ các lệnh sau
+    ```shell
+    # di chuyển đến thư mục cli
+    cd /path/to/repo/cli
+    # compile ra bin/ và obj/
+    dotnet build
+    # chạy ứng dụng
+    dotnet run
+    ```
+* Đối với web:
+    * Mở Command Prompt/Terminal, gõ các lệnh sau
+    ```shell
+    # di chuyển đến thư mục web
+    cd /path/to/repo/web
+    # compile ra bin/ và obj/
+    dotnet build
+    # chạy ứng dụng
+    dotnet run
+    ```
+
+### Những lỗi có thể xảy ra khi sử dụng
