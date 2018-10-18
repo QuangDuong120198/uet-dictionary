@@ -7,7 +7,7 @@ using System.Linq;
 using Newtonsoft.Json;
 
 namespace UetDictionaryCLI {
-    public class Dictionary {
+    public static class Dictionary {
         // fields
         public static List<Word> list { 
             get {
@@ -24,21 +24,26 @@ namespace UetDictionaryCLI {
                 string path = Directory.GetCurrentDirectory();
                 string filename = Path.Combine(path, "db.json");
 
-                TextWriter writer = new StreamWriter(filename);
-                writer.WriteLine(
-                    JsonConvert.SerializeObject(
-                        value.OrderBy(item => item.InEnglish)
-                        .GroupBy(item => new {
-                            item.InEnglish,
-                            item.InVietnamese
-                        })
-                        .Select(item => item.First())
-                        .ToList(),
-                        Formatting.Indented
-                    )
-                );
-                writer.Flush();
-                writer.Close();
+                try {
+                    using(TextWriter writer = new StreamWriter(filename)){
+                        writer.WriteLine(
+                            JsonConvert.SerializeObject(
+                                value.OrderBy(item => item.InEnglish)
+                                .GroupBy(item => new {
+                                    item.InEnglish,
+                                    item.InVietnamese
+                                })
+                                .Select(item => item.First())
+                                .ToList(),
+                                Formatting.Indented
+                            )
+                        );
+                        Message.Log("Đã thêm từ mới!", MessageType.Success);
+                    }
+                } catch (IOException exception) {
+                    exception.Message.ToString();
+                    Message.Log("File này đang được sử dụng!", MessageType.Danger);
+                }
             }
         }
         // methods
@@ -91,13 +96,12 @@ namespace UetDictionaryCLI {
                      * 2. Từ vừa nhập đã có
                      */
                     _list.Add(_word);
-                    Dictionary.list = _list.Distinct().ToList();
-                    Console.WriteLine("Đã thêm từ mới!");
+                    Dictionary.list = _list;
                 } else {
-                    Console.WriteLine("Từ không được bắt đầu bằng khoảng trắng, không chứa chữ số");
+                    Message.Log("Từ không được bắt đầu bằng khoảng trắng, không chứa chữ số", MessageType.Warn);
                 }
             } else {
-                Console.WriteLine("Chỉ sử dụng kí tự chữ cái");
+                Message.Log("Chỉ sử dụng kí tự chữ cái", MessageType.Warn);
             }
         }
     }

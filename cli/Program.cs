@@ -21,19 +21,19 @@ namespace UetDictionaryCLI
             Console.WriteLine("5. Nhập từ file");
             Console.Write("Chọn tính năng: ");
 
-            int feature = int.Parse(Console.ReadLine());
+            string feature = Console.ReadLine();
 
             switch(feature) {
-                case 2:
+                case "2":
                     DictionaryManager.ShowAllWords();
                     break;
-                case 3:
+                case "3":
                     DictionaryManager.Search();
                     break;
-                case 4:
+                case "4":
                     DictionaryManager.Export();
                     break;
-                case 5:
+                case "5":
                     DictionaryManager.Import();
                     break;
                 default:
