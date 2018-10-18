@@ -27,7 +27,7 @@ namespace UetDictionaryCLI {
             try {
                 if (Dictionary.list.Count > 0) {
                     Dictionary.list.ForEach(item => {
-                        Console.WriteLine($"{item.InEnglish}: {item.InVietnamese}");
+                        Message.Log($"{item.InEnglish}: {item.InVietnamese}", MessageType.Info);
                     });
                 }
             } catch (NullReferenceException exception) {
