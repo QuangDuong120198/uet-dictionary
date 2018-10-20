@@ -1,10 +1,5 @@
 # uet-dictionary
-<<<<<<< HEAD
-Bài tập lớn môn "Lập trình hướng đối tượng": Làm ứng dụng từ điển bằng java
-=======
-Bài tập lớn môn "Lập trình hướng đối tượng bằng Java": Làm ứng dụng từ điển bằng
->>>>>>> b95c39847b960d04d8e4f9e6d756418d23351754
-
+Bài tập lớn môn "Lập trình hướng đối tượng bằng Java": Làm ứng dụng từ điển
 ### Yêu cầu
 * .NET core 2.1
 
