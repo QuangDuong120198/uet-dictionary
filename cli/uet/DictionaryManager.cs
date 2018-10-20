@@ -57,7 +57,7 @@ namespace UetDictionaryCLI {
         }
 
         public static void Import() {
-            Console.Write("Nhập tên file");
+            Console.Write("Nhập tên file: ");
             string filepath = Console.ReadLine();
 
             if (File.Exists(filepath)) {
