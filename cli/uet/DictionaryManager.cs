@@ -20,11 +20,10 @@ namespace UetDictionaryCLI {
         }
 
         public static void ShowAllWords() {
-            //Console.OutputEncoding = Encoding.Unicode;
             try {
                 if (Dictionary.list.Count > 0) {
                     Dictionary.list.ForEach(item => {
-                        Message.Log($"{item.InEnglish}: {item.InVietnamese}", MessageType.Info);
+                        Message.Log($"* {item.InEnglish}: {item.InVietnamese}", MessageType.Info);
                     });
                 }
             } catch (NullReferenceException exception) {

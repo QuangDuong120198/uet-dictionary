@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
 
 namespace UetDictionaryCLI
 {
