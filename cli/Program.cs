@@ -11,8 +11,10 @@ namespace UetDictionaryCLI
     {
         public static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.Unicode;
-            Console.InputEncoding = Encoding.Unicode;
+            if ( Environment.OSVersion.VersionString.Contains("Windows") ) {
+                Console.OutputEncoding = Encoding.Unicode;
+                Console.InputEncoding = Encoding.Unicode;
+            }
             Console.WriteLine("Từ điển");
             Console.WriteLine("1. Thêm từ mới");
             Console.WriteLine("2. Hiển thị toàn bộ từ điển");

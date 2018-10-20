@@ -1,5 +1,5 @@
 .vscode/
 bin/
 obj/
-db.json
+cli/db.json
 bower_components/

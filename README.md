@@ -1,5 +1,5 @@
 # uet-dictionary
-Bài tập lớn môn "Lập trình hướng đối tượng": Làm ứng dụng từ điển bằng C#
+Bài tập lớn môn "Lập trình hướng đối tượng": Làm ứng dụng từ điển bằng java
 
 ### Yêu cầu
 * .NET core 2.1
