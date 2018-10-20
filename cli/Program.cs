@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Text;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Newtonsoft.Json;
 
 namespace UetDictionaryCLI
 {
@@ -11,8 +7,10 @@ namespace UetDictionaryCLI
     {
         public static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.Unicode;
-            Console.InputEncoding = Encoding.Unicode;
+            if (System.Environment.OSVersion.VersionString.Contains("Windows")) {
+                Console.OutputEncoding = Encoding.Unicode;
+                Console.InputEncoding = Encoding.Unicode;
+            }
             Console.WriteLine("Từ điển");
             Console.WriteLine("1. Thêm từ mới");
             Console.WriteLine("2. Hiển thị toàn bộ từ điển");

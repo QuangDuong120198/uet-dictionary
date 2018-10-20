@@ -4,8 +4,6 @@ using System.Text;
 namespace UetDictionaryCLI {
     public sealed class Message {
         public static void Log(string str, MessageType type) {
-            Console.InputEncoding = Encoding.Unicode;
-            Console.OutputEncoding = Encoding.Unicode;
             switch(type) {
                 case MessageType.Success:
                     Console.ForegroundColor = ConsoleColor.Green;

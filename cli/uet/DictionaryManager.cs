@@ -10,9 +10,6 @@ namespace UetDictionaryCLI {
         public static void InsertFromCommandLine() {
             string English, Vietnamese;
 
-            Console.InputEncoding = Encoding.Unicode;
-            Console.OutputEncoding = Encoding.Unicode;
-
             Console.Write(">>> Nhập vào từ tiếng Anh: ");
             English = Console.ReadLine();
 
@@ -23,11 +20,10 @@ namespace UetDictionaryCLI {
         }
 
         public static void ShowAllWords() {
-            Console.OutputEncoding = Encoding.Unicode;
             try {
                 if (Dictionary.list.Count > 0) {
                     Dictionary.list.ForEach(item => {
-                        Message.Log($"{item.InEnglish}: {item.InVietnamese}", MessageType.Info);
+                        Message.Log($"* {item.InEnglish}: {item.InVietnamese}", MessageType.Info);
                     });
                 }
             } catch (NullReferenceException exception) {
@@ -37,7 +33,6 @@ namespace UetDictionaryCLI {
         }
 
         public static void Search() {
-            Console.OutputEncoding = Encoding.Unicode;
             Console.Write("Nhập từ tìm kiếm: ");
             string _query = Console.ReadLine();
             List<Word> result = Dictionary.list
@@ -62,8 +57,6 @@ namespace UetDictionaryCLI {
         }
 
         public static void Import() {
-            Console.OutputEncoding = Encoding.Unicode;
-            Console.InputEncoding = Encoding.Unicode;
             Console.Write("Nhập tên file");
             string filepath = Console.ReadLine();
 
