@@ -2,4 +2,6 @@
 bin/
 obj/
 cli/db.json
-bower_components/
+web/**/bower_components/
+web/ClientApp/package-lock.json
+web/ClientApp/node_modules/
