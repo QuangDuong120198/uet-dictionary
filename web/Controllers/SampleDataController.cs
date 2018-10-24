@@ -36,7 +36,7 @@ namespace UetDictionaryWeb.Controllers
             {
                 get
                 {
-                    return 32 + (int)(TemperatureC * 5 / 9);
+                    return 32 + (int)(TemperatureC / 0.5556);
                 }
             }
         }

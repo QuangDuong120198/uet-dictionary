@@ -1,95 +1,96 @@
 using System;
-using System.Text;
 using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using Newtonsoft.Json;
+using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore;
 
-namespace UetDictionaryCLI {
-    public class DictionaryManager {
-        public static void InsertFromCommandLine() {
-            string English, Vietnamese;
-
-            Console.Write(">>> Nhập vào từ tiếng Anh: ");
-            English = Console.ReadLine();
-
-            Console.Write(">>> Nhập vào nghĩa tiếng Việt: ");
-            Vietnamese = Console.ReadLine();
-
-            Dictionary.Write(new Word(English, Vietnamese));
-        }
-
-        public static void ShowAllWords() {
-            try {
-                if (Dictionary.list.Count > 0) {
-                    Dictionary.list.ForEach(item => {
-                        Message.Log($"* {item.InEnglish}: {item.InVietnamese}", MessageType.Info);
-                    });
-                }
-            } catch (NullReferenceException exception) {
-                exception.Message.ToString();
-                Message.Log("Từ điển đang rỗng", MessageType.Warn);
-            }
-        }
-
-        public static void Search() {
-            Console.Write("Nhập từ tìm kiếm: ");
-            string _query = Console.ReadLine();
-            List<Word> result = Dictionary.list
-                .Where(item => item.InEnglish.StartsWith(_query.ToLower()))
-                .ToList();
-            if (result.Count > 0) {
-                result.ForEach(item => {
-                    Message.Log($"* {item.InEnglish}: {item.InVietnamese}", MessageType.Info);
+namespace UetDictionaryCli
+{
+    public static class DictionaryManager
+    {
+        public static void ShowAllWords()
+        {
+            Dictionary.GetAllWords()
+                .ForEach(word => {
+                    Message.Log($"* {word.InEnglish}: {word.InVietnamese}", MessageType.Info);
                 });
+        }
+
+        public static void Search()
+        {
+            Console.Write(">>> Nhập từ tìm kiếm: ");
+            string _query = Console.ReadLine();
+            _query = Regex.Replace(_query, @"[^A-Za-z]+", "").ToLower();
+            Dictionary.Search(_query)
+                .ForEach(word => {
+                    Message.Log($"* {word.InEnglish}: {word.InVietnamese}", MessageType.Info);
+                });
+        }
+
+        public static void InsertFromCli()
+        {
+            string _English, _Vietnamese;
+            Console.Write(">>> Nhập từ tiếng Anh: ");
+            _English = Console.ReadLine();
+            Console.Write(">>> Nhập nghĩa tiếng Việt: ");
+            _Vietnamese = Console.ReadLine();
+
+            _English = Regex.Replace(_English, @"[^A-Za-z]+", "").ToLower();
+
+            int changes = Dictionary.Insert(_English, _Vietnamese);
+
+            if (changes == 0) {
+                Message.Log($"\"{_English}\" đã có trong từ điển", MessageType.Warning);
             } else {
-                Message.Log("Không tìm thấy từ bạn tìm kiếm", MessageType.Warn);
+                Message.Log($"Đã thêm \"{_English}\" vào từ điển", MessageType.Success);
             }
         }
 
-        public static void Export() {
-            string filepath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "dictionary.txt");
-            TextWriter writer = new StreamWriter(filepath);
-            writer.WriteLine(JsonConvert.SerializeObject(Dictionary.list, Formatting.Indented));
-            writer.Flush();
-            writer.Close();
-            Console.WriteLine($"Đã xuất ra file {filepath}");
-        }
+        public static void EditFromCli()
+        {
+            string _WordToEdit, _NewEnglish, _NewVietnamese;
+            Console.Write(">>> Nhập từ bạn muốn sửa: ");
+            
+            _WordToEdit = Console.ReadLine();
+            _WordToEdit = Regex.Replace(_WordToEdit, "[^a-zA-Z]", "").ToLower();
 
-        public static void Import() {
-            Console.Write("Nhập tên file: ");
-            string filepath = Console.ReadLine();
+            if (Dictionary.Search(_WordToEdit).Count > 0) {
+                Console.Write(">>> Nhập lại từ tiếng Anh: ");
+                _NewEnglish = Console.ReadLine();
+                _NewEnglish = Regex.Replace(_NewEnglish, "[^a-zA-Z]", "").ToLower();
 
-            if (File.Exists(filepath)) {
-                TextReader reader = new StreamReader(filepath);
-                string content = reader.ReadToEnd();
-                List<Word> ParseContent = null;
-                
-                try {
-                    ParseContent = JsonConvert.DeserializeObject<List<Word>>(content);
-                } catch (JsonSerializationException exception) {
-                    exception.Message.ToString();
-                    Message.Log("File không đúng định dạng", MessageType.Danger);
-                } catch (JsonReaderException exception) {
-                    exception.Message.ToString();
-                    Message.Log("File không đúng định dạng", MessageType.Danger);
-                } catch (IOException exception) {
-                    exception.Message.ToString();
-                    Message.Log("File đang được sử dụng", MessageType.Danger);
-                } finally {
-                    if (ParseContent == null) {
-                        Message.Log("File không đúng định dạng", MessageType.Danger);
-                    } else {
-                        ParseContent.ForEach(item => {
-                            Dictionary.Write(item);
-                        });
-                    }
+                Console.Write(">>> Nhập lại nghĩa tiếng Việt: ");
+                _NewVietnamese = Console.ReadLine();
+
+                int result = Dictionary.Edit(_WordToEdit, _NewEnglish, _NewVietnamese);
+                if (result > 0) {
+                    Message.Log($"Đã sửa từ \"{_WordToEdit}\"", MessageType.Success);
+                } else {
+                    Message.Log($"Không có thay đổi nào", MessageType.Warning);
                 }
             } else {
-                Message.Log("File này không tồn tại", MessageType.Danger);
+                Message.Log("Không tìm thấy từ bạn muốn sửa", MessageType.Danger);
+            }
+        }
+
+        public static void RemoveFromCli()
+        {
+            string _WordToRemove;
+            Console.Write(">>> Nhập từ bạn muốn xóa: ");
+            _WordToRemove = Console.ReadLine();
+
+            _WordToRemove = Regex.Replace(_WordToRemove, "[^A-Za-z]", "");
+
+            if (Dictionary.Search(_WordToRemove).Count > 0) {
+                int deleted = Dictionary.Remove(_WordToRemove);
+                if (deleted > 0) {
+                    Message.Log($"Đã xóa \"{_WordToRemove}\" khỏi từ điển", MessageType.Success);
+                } else {
+                    Message.Log("Không có thay đổi nào", MessageType.Warning);
+                }
+            } else {
+                Message.Log("Không tìm thấy từ bạn muốn xóa", MessageType.Danger);
             }
         }
 
     }
 }
-

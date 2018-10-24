@@ -1,12 +1,12 @@
-using System;
-using System.Text;
-
-namespace UetDictionaryCLI {
-    public enum MessageType {
-        Success, // green
-        Warn, // yellow
-        Info, // cyan
-        Danger, // red
-        Default // white
+namespace UetDictionaryCli
+{
+    public enum MessageType
+    {
+        /* Tương tự như default, success, info, warning trong bootstrap-theme  */
+        Default,
+        Success,
+        Info,
+        Danger,
+        Warning
     }
 }

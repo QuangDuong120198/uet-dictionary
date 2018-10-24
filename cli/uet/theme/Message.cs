@@ -1,18 +1,21 @@
 using System;
-using System.Text;
 
-namespace UetDictionaryCLI {
-    public sealed class Message {
-        public static void Log(string str, MessageType type) {
-            switch(type) {
+namespace UetDictionaryCli
+{
+    public static class Message
+    {
+        public static void Log(string str, MessageType type)
+        {
+            switch(type)
+            {
+                case MessageType.Info:
+                    Console.ForegroundColor = ConsoleColor.Cyan;
+                    break;
                 case MessageType.Success:
                     Console.ForegroundColor = ConsoleColor.Green;
                     break;
-                case MessageType.Warn:
+                case MessageType.Warning:
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    break;
-                case MessageType.Info:
-                    Console.ForegroundColor = ConsoleColor.Cyan;
                     break;
                 case MessageType.Danger:
                     Console.ForegroundColor = ConsoleColor.Red;

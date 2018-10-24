@@ -1,41 +1,45 @@
 ﻿using System;
 using System.Text;
+using System.Linq;
 
-namespace UetDictionaryCLI
+namespace UetDictionaryCli
 {
-    public class Program
+    class Program
     {
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
-            if ( Environment.OSVersion.VersionString.Contains("Windows") ) {
+            if (Environment.OSVersion.VersionString.Contains("Windows")) {
                 Console.OutputEncoding = Encoding.Unicode;
                 Console.InputEncoding = Encoding.Unicode;
             }
-            Console.WriteLine("Từ điển");
-            Console.WriteLine("1. Thêm từ mới");
-            Console.WriteLine("2. Hiển thị toàn bộ từ điển");
-            Console.WriteLine("3. Tìm kiếm");
-            Console.WriteLine("4. Xuất file");
-            Console.WriteLine("5. Nhập từ file");
-            Console.Write("Chọn tính năng: ");
+            Console.WriteLine("TỪ ĐIỂN TRÊN DÒNG LỆNH");
+            Console.WriteLine("1> Liệt kê toàn bộ");
+            Console.WriteLine("2> Tìm kiếm");
+            Console.WriteLine("3> Thêm từ mới");
+            Console.WriteLine("4> Sửa");
+            Console.WriteLine("5> Xóa");
+            Console.Write("Chọn tính năng (1-5): ");
 
-            string feature = Console.ReadLine();
-
-            switch(feature) {
-                case "2":
+            string choice = Console.ReadLine();
+            switch(choice)
+            {
+                case "1":
                     DictionaryManager.ShowAllWords();
                     break;
-                case "3":
+                case "2":
                     DictionaryManager.Search();
                     break;
+                case "3":
+                    DictionaryManager.InsertFromCli();
+                    break;
                 case "4":
-                    DictionaryManager.Export();
+                    DictionaryManager.EditFromCli();
                     break;
                 case "5":
-                    DictionaryManager.Import();
+                    DictionaryManager.RemoveFromCli();
                     break;
                 default:
-                    DictionaryManager.InsertFromCommandLine();
+                    DictionaryManager.ShowAllWords();
                     break;
             }
         }
