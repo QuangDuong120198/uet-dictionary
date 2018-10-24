@@ -95,7 +95,21 @@ namespace UetDictionaryCli
 
         public static void Export()
         {
-            
+            try {
+                string homepath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                string filepath = Path.Combine(homepath, "dictionary.txt");
+                if (!File.Exists(filepath)) {
+                    File.Create(filepath);
+                }
+                using(TextWriter writer = new StreamWriter(filepath)) {
+                    string content = Dictionary.ToString();
+                    writer.WriteLine(content);
+                    Message.Log($"Đã lưu từ điển vào file {filepath}", MessageType.Success);
+                }
+            } catch(IOException exception) {
+                exception.Message.ToString();
+                Message.Log($"Đã xảy ra lỗi khi lưu file, vui lòng thử lại", MessageType.Danger);
+            }
         }
     }
 }
