@@ -18,7 +18,8 @@ namespace UetDictionaryCli
             Console.WriteLine("3> Thêm từ mới");
             Console.WriteLine("4> Sửa");
             Console.WriteLine("5> Xóa");
-            Console.Write("Chọn tính năng (1-5): ");
+            Console.WriteLine("6> Xuất file");
+            Console.Write("Chọn tính năng (1-6): ");
 
             string choice = Console.ReadLine();
             switch(choice)
@@ -37,6 +38,9 @@ namespace UetDictionaryCli
                     break;
                 case "5":
                     DictionaryManager.RemoveFromCli();
+                    break;
+                case "6":
+                    DictionaryManager.Export();
                     break;
                 default:
                     DictionaryManager.ShowAllWords();

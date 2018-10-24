@@ -24,11 +24,12 @@ git clone https://github.com/QuangDuong120198/uet-dictionary.git
     dotnet run
     ```
     * Ứng dụng phiên bản CLI có 5 tính năng:
-        1. Thêm từ mới
-        2. Liệt kê toàn bộ
-        3. Tìm kiếm (chuỗi tìm kiếm phải khớp với đoạn đầu của từ)
-        4. Xuất ra file trong thư mục $HOME
-        5. Nhập từ mới từ một file đúng định dạng json
+        1. Liệt kê toàn bộ
+        2. Tìm kiếm (chuỗi tìm kiếm phải khớp với đoạn đầu của từ)
+        3. Thêm từ mới
+        4. Sửa
+        5. Xóa
+        6. Xuất ra file trong thư mục $HOME
 * Đối với web:
     * Compile
     ```shell
@@ -50,6 +51,9 @@ git clone https://github.com/QuangDuong120198/uet-dictionary.git
     dotnet run
     ```
     Sau đó mở trình duyệt, gõ đường dẫn như thông báo trong terminal, mà mặc định là http://localhost:5000
+
+### Ứng dụng được làm ra như thế nào
+
 ### Những lỗi có thể xảy ra khi sử dụng
     * "Duplicate 'System.Reflection.AssemblyCompanyAttribute' attribute"
         Khi gặp lỗi này, thử xóa hai thư mục bin/ và obj/ rồi chạy lại lệnh `dotnet build`

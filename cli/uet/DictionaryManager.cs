@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.IO;
 using Microsoft.EntityFrameworkCore;
 
 namespace UetDictionaryCli
@@ -92,5 +93,9 @@ namespace UetDictionaryCli
             }
         }
 
+        public static void Export()
+        {
+            
+        }
     }
 }
