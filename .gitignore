@@ -3,5 +3,5 @@ bin/
 obj/
 cli/db.json
 web/**/bower_components/
-web/ClientApp/package-lock.json
-web/ClientApp/node_modules/
+web/**/node_modules/
+tuple/

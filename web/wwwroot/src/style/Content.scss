@@ -1,0 +1,9 @@
+.content {
+    margin-left: 0;
+    margin-top: 50px;
+    @media (min-width: 768px) {
+        margin-left: 300px;
+        margin-top: 0;
+    }
+}
+

@@ -1,0 +1,44 @@
+{
+  "name": "dictionary",
+  "version": "1.0.0",
+  "description": "dictionary app",
+  "main": "./src/index.js",
+  "scripts": {
+    "build": "webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/QuangDuong120198/uet-dictionary.git"
+  },
+  "keywords": [
+    "dotnetcore",
+    "javascript"
+  ],
+  "author": "Ngo Quang Duong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/QuangDuong120198/uet-dictionary/issues"
+  },
+  "homepage": "https://github.com/QuangDuong120198/uet-dictionary#readme",
+  "dependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.1.2",
+    "axios": "^0.18.0",
+    "babel-loader": "^8.0.4",
+    "bootstrap-css-only": "^4.1.1",
+    "css-loader": "^1.0.0",
+    "react": "^16.6.0",
+    "react-bootstrap": "^0.32.4",
+    "react-dom": "^16.6.0",
+    "react-router": "^4.3.1",
+    "react-router-bootstrap": "^0.24.4",
+    "react-router-dom": "^4.3.1",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.22.0",
+    "webpack-cli": "^3.1.2"
+  }
+}

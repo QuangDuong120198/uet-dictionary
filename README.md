@@ -40,10 +40,12 @@ git clone https://github.com/QuangDuong120198/uet-dictionary.git
     ```
     * Cài đặt các package
     ```shell
-    # di chuyển đến thư mục ClientApp
-    cd project/web/ClientApp
-    # chạy lệnh cài đặt
+    # di chuyển đến thư mục wwwroot
+    cd project/web/wwwroot
+    # chạy lệnh cài đặt các npm package
     npm i
+    # bower
+    bower install bootstrap-css-only font-awesome
     ```
     * Chạy
     ```shell
