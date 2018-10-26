@@ -1,30 +1,29 @@
 import React from "react";
-import axios from "axios";
 
 export default class Content extends React.Component
 {
     constructor(props)
     {
         super(props);
-        this.state = {};
+        this.state = {
+            content: this.props.string
+        };
+
+        this.speak = this.speak.bind(this);
     }
 
-    componentDidMount()
+    speak(str)
     {
-        axios.post("/home/json")
-        .then((response) => {
-            console.log(response.data);
-        })
-        .catch((err) => {
-            console.warn(err.message);
-        });
+        SpeechSynthesis.speak(new SpeechSynthesisUtterance(str));
     }
 
     render()
     {
         return (
             <div className="content">
-                Dictionary
+                <div className="app-name">Từ điển Lạc Trôi</div>
+                <div>
+                </div>
             </div>
         );
     }

@@ -4,6 +4,7 @@
     z-index: 1000;
     top: 0;
     width: 100%;
+    box-shadow: 0 0 5px #333;
 
     @media (min-width: 768px) {
         height: 100%;
@@ -16,34 +17,78 @@
         display: flex;
         align-items: center;
         position: relative;
+        .app-icon {
+            position: absolute;
+            left: 10px;
+            z-index: 100;
+            font-size: 20px;
+            color: #ffffff;
+            flex-basis: 40px;
+            .app-name {
+                font-family: 'Courier New', Courier, monospace;
+                font-weight: bold;
+            }
+            &:hover {
+                cursor: pointer;
+            }
+            @media(min-width: 768px) {
+                display: none;
+                color: #333333;
+            }
+        }
         input {
-            padding-left: 30px;
+            position: absolute;
+            z-index: 200;
+            width: 100%;
+            padding-right: 30px;
+            &[aria-expanded="true"] {
+                display: block;
+            }
+            &[aria-expanded="false"] {
+                display: none;
+            }
         }
         .search-icon {
             position: absolute;
-            z-index: 1000;
+            z-index: 300;
             flex-basis: 40px;
-            left: 8px;
+            right: 8px;
             font-size: 20px;
-            color: #333;
+            color: #333333;
             &:hover {
                 cursor: pointer;
             }
         }
     }
     .result-container {
-        background-color:#ffffff;
+        background-color: blueviolet;
         height: calc(100vh - 50px);
         overflow: auto;
+        &[aria-expanded="true"] {
+            display: block;
+        }
+        &[aria-expanded="false"] {
+            display: none;
+        }
+
         .item {
             padding: 3px 10px;
+            background-color: #f5f5f0;
             &:hover {
                 background-color: #f5f5f0;
+                cursor: pointer;
+                font-weight: bold;
+                border-left: 5px solid darkviolet;
+                transition: border-left 0.4s ease-in-out;
             }
             &:nth-child(even) {
                 background-color: #f5f5f0;
                 &:hover {
                     background-color: #cccccc;
+                    cursor: pointer;
+                    font-weight: bold;
+                    border-left: 5px solid darkviolet;
+                    transition: border-left 0.4s ease-in-out;
                 }
             }
         }

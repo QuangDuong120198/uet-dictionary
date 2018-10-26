@@ -11,22 +11,22 @@ namespace UetDictionaryWeb.Controllers
 {
     public class HomeController : Controller
     {
+        protected DictionaryContext db;
+
+        public HomeController()
+        {
+            db = new DictionaryContext();
+        }
         public IActionResult Index()
         {
             return View();
         }
         public IActionResult Json()
         {
-            List<string> str = new List<string>() {
-                "Duong",
-                "Giang",
-                "Hoang",
-                "Tung",
-                "Khanh",
-                "Le Huy",
-                "Duy Anh"
-            };
-            return new JsonResult(str);
+            return new JsonResult(db.Words.ToList().Select(word => new {
+                id = word.ID,
+                inEnglish = word.InEnglish
+            }));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

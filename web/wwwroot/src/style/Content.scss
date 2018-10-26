@@ -5,5 +5,18 @@
         margin-left: 300px;
         margin-top: 0;
     }
+    .app-name {
+        height: 50px;
+        font-weight: bold;
+        font-family: 'Courier New', Courier, monospace;
+        padding-left: 10px;
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        border-bottom: 1px solid #333333;
+        @media (max-width: 767px) {
+            display: none;
+        }
+    }
 }
 

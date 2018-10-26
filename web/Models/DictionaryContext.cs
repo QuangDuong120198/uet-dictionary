@@ -7,6 +7,10 @@ namespace UetDictionaryWeb.Models
     public class DictionaryContext : DbContext
     {
         public DbSet<Word> Words { get; set; }
+
+        public DictionaryContext()
+        {
+        }
         public DictionaryContext(DbContextOptions<DictionaryContext> options) : base(options)
         {
         }

@@ -1,0 +1,23 @@
+[
+    {
+        "InEnglish": "cat",
+        "Details": {
+            "Pronunciation": "kat",
+            "AllMeaningsAndExamples": [
+                {
+                    "WordType": "noun",
+                    "MeaningAndExample": [
+                        {
+                            "Meaning": "meaning 1",
+                            "Example": "example 1"
+                        },
+                        {
+                            "Meaning": "meaning 2",
+                            "Example": "example 2"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+]
