@@ -1,7 +1,5 @@
 .vscode/
 bin/
 obj/
-cli/db.json
 web/**/bower_components/
 web/**/node_modules/
-tuple/

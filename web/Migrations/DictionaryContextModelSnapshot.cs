@@ -26,6 +26,9 @@ namespace UetDictionaryWeb.Migrations
                     b.Property<string>("InEnglish")
                         .IsRequired();
 
+                    b.Property<string>("Pronunciation")
+                        .IsRequired();
+
                     b.HasKey("ID");
 
                     b.ToTable("Words");

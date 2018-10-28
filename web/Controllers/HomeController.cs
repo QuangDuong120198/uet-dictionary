@@ -21,11 +21,13 @@ namespace UetDictionaryWeb.Controllers
         {
             return View();
         }
-        public IActionResult Json()
+        public IActionResult GetDictionary()
         {
             return new JsonResult(db.Words.ToList().Select(word => new {
                 id = word.ID,
-                inEnglish = word.InEnglish
+                inEnglish = word.InEnglish,
+                pronunciation = word.Pronunciation,
+                details = word.Details 
             }));
         }
 

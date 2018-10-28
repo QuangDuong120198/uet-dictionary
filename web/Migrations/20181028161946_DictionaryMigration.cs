@@ -13,6 +13,7 @@ namespace UetDictionaryWeb.Migrations
                     ID = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     InEnglish = table.Column<string>(nullable: false),
+                    Pronunciation = table.Column<string>(nullable: false),
                     Details = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
