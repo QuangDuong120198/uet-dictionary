@@ -19,7 +19,13 @@ export default class Layout extends React.Component
                 handleSearchBoxChange={this.props.handleSearchBoxChange}
                 setCurrentWord={this.props.setCurrentWord}
                 />
-                <Content currentWord={this.props.currentWord} handleInsertModalShow={this.props.handleInsertModalShow} />
+                <Content
+                currentWord={this.props.currentWord}
+                handleInsertModalShow={this.props.handleInsertModalShow}
+                handleEditModalShow={this.props.handleEditModalShow}
+                handleEditModalHide={this.props.handleEditModalHide}
+                setCurrentWord={this.props.setCurrentWord}
+                />
             </div>
         );
     }
