@@ -11,11 +11,10 @@ export default class App extends React.Component
         super(props);
         this.state = {
             data: [],
-            filteredData: [],
             searchInput: "",
             currentWord: {
                 wordId: 0,
-                wordName: "",
+                wordInEnglish: "",
                 wordPronunciation: "",
                 wordDetails: [
                     {
@@ -30,25 +29,53 @@ export default class App extends React.Component
                     }
                 ]
             },
-            input: {
-                wordId: 0,
-                wordName: { value: "", message: "" },
-                wordPronunciation: { value: "", message: "" },
-                wordDetails: [
-                    {
-                        type: { value: "", message: "" },
-                        meaning: { value: "", message: "" },
-                        examples: [
-                            {
-                                inEnglish: { value: "", message: "" },
-                                inVietnamese: { value: "", message: "" }
-                            }
-                        ]
-                    }
-                ]
+            editModal: {
+                show: false,
+                input: {
+                    wordId: 0,
+                    wordInEnglish: { value: "", message: "" },
+                    wordPronunciation: { value: "", message: "" },
+                    wordDetails: [
+                        {
+                            type: { value: "", message: "" },
+                            meaning: { value: "", message: "" },
+                            examples: [
+                                {
+                                    inEnglish: { value: "", message: "" },
+                                    inVietnamese: { value: "", message: "" }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            insertModal: {
+                show: false,
+                input: {
+                    wordId: 0,
+                    wordName: { value: "", message: "" },
+                    wordPronunciation: { value: "", message: "" },
+                    wordDetails: [
+                        {
+                            type: { value: "", message: "" },
+                            meaning: { value: "", message: "" },
+                            examples: [
+                                {
+                                    inEnglish: { value: "", message: "" },
+                                    inVietnamese: { value: "", message: "" }
+                                }
+                            ]
+                        }
+                    ]
+                }
             }
         };
         this.handleSearchBoxChange = this.handleSearchBoxChange.bind(this);
+        this.handleEditModalHide = this.handleEditModalHide.bind(this);
+        this.handleEditModalShow = this.handleEditModalShow.bind(this);
+        this.handleInsertModalHide = this.handleInsertModalHide.bind(this);
+        this.handleInsertModalShow = this.handleInsertModalShow.bind(this);
+
         this.setCurrentWord = this.setCurrentWord.bind(this);
     }
 
@@ -56,15 +83,31 @@ export default class App extends React.Component
     {
         axios.post("/home/getdictionary")
         .then((response) => {
-            console.log(response.data);
+            console.log(response.data);// khi làm xong thì bỏ dòng này đi
             this.setState({
-                data: response.data,
-                filteredData: response.data
+                data: response.data
             });
         })
         .catch((err) => {
             console.warn(err.message);
         });
+    }
+
+    setCurrentWord(id)
+    {
+        if (typeof (+id) === "number" && Number.isInteger(+id) && (+id > 0)) {
+            let getWordData = this.state.data.filter(value => value.id === (+id));
+            if (getWordData.length) {
+                this.setState({
+                    currentWord: {
+                        wordId: getWordData[0].id,
+                        wordInEnglish: getWordData[0].inEnglish,
+                        wordPronunciation: getWordData[0].pronunciation,
+                        wordDetails: JSON.parse(getWordData[0].details)
+                    }
+                });
+            }
+        }
     }
 
     handleSearchBoxChange(e)
@@ -74,24 +117,43 @@ export default class App extends React.Component
         });
     }
 
-    setCurrentWord(id)
+    handleEditModalShow()
     {
-        if (typeof (+id) === "number" && Number.isInteger(+id) && (+id > 0)) {
-            let currentWordInJson =  this.state.data
-                                .find((value) => {
-                                    return value.id === id;
-                                });
-            let currentWord = this.state.currentWord;
-            currentWord.wordId = currentWordInJson.id;
-            currentWord.wordName = currentWordInJson.inEnglish;
-            currentWord.wordPronunciation = currentWordInJson.pronunciation;
-            currentWord.wordDetails = JSON.parse(currentWordInJson.details);
-            this.setState({
-                currentWord: currentWord
-            });
-        }
+        let state = this.state;
+        state.editModal.show = true;
+        this.setState({
+            editModal: state.editModal
+        }, ()=>{
+            console.log(state.editModal);
+        });
     }
 
+    handleEditModalHide()
+    {
+        let state = this.state;
+        state.editModal.show = false;
+        this.setState({
+            editModal: state.editModal
+        });
+    }
+
+    handleInsertModalShow()
+    {
+        let state = this.state;
+        state.insertModal.show = true;
+        this.setState({
+            insertModal: state.insertModal
+        });
+    }
+
+    handleInsertModalHide()
+    {
+        let state = this.state;
+        state.insertModal.show = false;
+        this.setState({
+            insertModal: state.insertModal
+        });
+    }
 
     render()
     {
@@ -103,12 +165,19 @@ export default class App extends React.Component
                 currentWord={this.state.currentWord}
                 handleSearchBoxChange={this.handleSearchBoxChange}
                 setCurrentWord={this.setCurrentWord}
+                handleInsertModalShow={this.handleInsertModalShow}
                 />
                 <InsertModal
                 data={this.state.data}
+                insertModal={this.state.insertModal}
+                handleInsertModalHide={this.handleInsertModalHide}
+                handleInsertModalShow={this.handleInsertModalShow}
                 />
                 <EditModal
                 data={this.state.data}
+                editModal={this.state.editModal}
+                handleEditModalHide={this.handleEditModalHide}
+                handleEditModalShow={this.handleEditModalShow}
                 />
             </div>
         );

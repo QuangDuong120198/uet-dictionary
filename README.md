@@ -1,7 +1,7 @@
 # uet-dictionary
 Bài tập lớn môn *"Lập trình hướng đối tượng bằng Java"*: *Làm ứng dụng từ điển*.
 ## Yêu cầu của ứng dụng
-* **.NET core 2.1**. **.NET core** đấy, không phải **.NET framework** đâu. Cài được trên cả **Windows**, **Mac** và **Linux**.
+* **.NET core 2.1**.
 * **nodejs**, **npm** phiên bản mới nhất.
 
 ## Hướng dẫn sử dụng
@@ -108,11 +108,15 @@ this.state = {
         wordDetails: [
             {
                 type: "",
-                meaning: "",
-                examples: [
+                meaningsAndExamples: [
                     {
-                        inEnglish: "",
-                        inVietnamese: ""
+                        meaning: "",
+                        examples: [
+                            {
+                                inEnglish: "",
+                                inVietnamese: ""
+                            }
+                        ]
                     }
                 ]
             }
@@ -134,20 +138,24 @@ this.state = {
                     value: "",
                     message: ""
                 },
-                meaning: {
-                    value: "",
-                    message: ""
-                },
-                examples: [
+                meaningsAndExamples: [
                     {
-                        inEnglish: {
+                        meaning: {
                             value: "",
                             message: ""
                         },
-                        inVietnamese: {
-                            value: "",
-                            message: ""
-                        }
+                        examples: [
+                            {
+                                inEnglish: {
+                                    value: "",
+                                    message: ""
+                                },
+                                inVietnamese: {
+                                    value: "",
+                                    message: ""
+                                }
+                            }
+                        ]
                     }
                 ]
             }

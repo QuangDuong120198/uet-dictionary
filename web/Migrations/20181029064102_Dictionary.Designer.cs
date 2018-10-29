@@ -8,8 +8,8 @@ using UetDictionaryWeb.Models;
 namespace UetDictionaryWeb.Migrations
 {
     [DbContext(typeof(DictionaryContext))]
-    [Migration("20181028161946_DictionaryMigration")]
-    partial class DictionaryMigration
+    [Migration("20181029064102_Dictionary")]
+    partial class Dictionary
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

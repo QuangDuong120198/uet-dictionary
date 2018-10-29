@@ -23,12 +23,7 @@ namespace UetDictionaryWeb.Controllers
         }
         public IActionResult GetDictionary()
         {
-            return new JsonResult(db.Words.ToList().Select(word => new {
-                id = word.ID,
-                inEnglish = word.InEnglish,
-                pronunciation = word.Pronunciation,
-                details = word.Details 
-            }));
+            return new JsonResult(db.Words);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

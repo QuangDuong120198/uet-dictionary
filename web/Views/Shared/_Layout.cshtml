@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@(ViewData["Title"]) - UetDictionaryWeb</title>
     <link rel="stylesheet" type="text/css" href="~/css/index.css?name=@(DateTime.Now.ToString())" />
-    <link rel="stylesheet" type="text/css" href="~/bower_components/font-awesome/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap-css-only/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap-css-only/css/bootstrap-grid.min.css" />
-    <link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap-css-only/css/bootstrap-reboot.min.css" />
+    <link rel="stylesheet" type="text/css" href="~/bower_components/font-awesome/css/font-awesome.min.css?name=@(DateTime.Now.ToString())" />
+    <link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap-css-only/css/bootstrap.min.css?name=@(DateTime.Now.ToString())" />
+    <link rel="stylesheet" type="text/css" href="~/bower_components/bootstrap-css-only/css/bootstrap-theme.min.css" />
 </head>
 <body>
     @(RenderBody())

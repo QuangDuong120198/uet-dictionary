@@ -5,7 +5,6 @@ export default class Menu extends React.Component
     constructor(props)
     {
         super(props);
-        this.handleSearchBoxChange = this.handleSearchBoxChange.bind(this);
         this.handleClickList = this.handleClickList.bind(this);
     }
 
@@ -16,12 +15,14 @@ export default class Menu extends React.Component
 
         window.addEventListener("click", (event) => {
             if (window.innerWidth < 768) {
+                let searchBox = document.querySelector(".inner-search-panel input");
+                let resultContainer = document.querySelector(".result-container");
                 if (event.target.matches(".search-icon") || event.target.closest(".search-icon")) {
-                    document.querySelector(".inner-search-panel input").setAttribute("aria-expanded", true);
-                } else if (event.target.closest(".result-container")) {
-                    document.querySelector(".inner-search-panel input").setAttribute("aria-expanded", false);
-                } else if (!event.target.closest(".inner-search-panel")) {
-                    document.querySelector(".inner-search-panel input").setAttribute("aria-expanded", false);
+                    searchBox.setAttribute("aria-expanded", true);
+                    resultContainer.setAttribute("aria-expanded", true);
+                } else if (event.target.closest(".result-container") || !event.target.closest(".inner-search-panel")) {
+                    searchBox.setAttribute("aria-expanded", false);
+                    resultContainer.setAttribute("aria-expanded", false);
                 }
             }
         });
@@ -43,12 +44,6 @@ export default class Menu extends React.Component
         this.props.setCurrentWord(+e.target.dataset.wordId);
     }
 
-    handleSearchBoxChange(e)
-    {
-
-    }
-
-
     render()
     {
         let _this = this;
@@ -61,7 +56,13 @@ export default class Menu extends React.Component
                             Từ điển Anh-Việt
                         </span>
                     </div>
-                    <input type="text" className="form-control" placeholder="Search..." value={this.props.searchInput} onChange={this.props.handleSearchBoxChange} aria-expanded={true} />
+                    <input
+                    type="text"
+                    className="form-control" 
+                    placeholder="Search..."
+                    value={this.props.searchInput}
+                    onChange={this.props.handleSearchBoxChange}
+                    aria-expanded={true} />
                     <div className="search-icon">
                         <span>
                             <i className="fa fa-search"></i>
@@ -71,7 +72,9 @@ export default class Menu extends React.Component
                 <div className="result-container" aria-expanded={true}>
                     <div className="result">
                     {
-                        this.props.data.map((value, index)=>{
+                        this.props.data
+                        .filter(value => value.inEnglish.startsWith(this.props.searchInput))
+                        .map((value, index)=>{
                             return (
                                 <div className="item" key={index} data-word-id={value.id} onClick={_this.handleClickList}>{value.inEnglish}</div>
                             );
