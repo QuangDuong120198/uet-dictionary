@@ -20,7 +20,7 @@ namespace UetDictionaryWeb.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Details")
+                    b.Property<string>("Content")
                         .IsRequired();
 
                     b.Property<string>("InEnglish")

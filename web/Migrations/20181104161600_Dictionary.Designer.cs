@@ -8,7 +8,7 @@ using UetDictionaryWeb.Models;
 namespace UetDictionaryWeb.Migrations
 {
     [DbContext(typeof(DictionaryContext))]
-    [Migration("20181029064102_Dictionary")]
+    [Migration("20181104161600_Dictionary")]
     partial class Dictionary
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace UetDictionaryWeb.Migrations
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Details")
+                    b.Property<string>("Content")
                         .IsRequired();
 
                     b.Property<string>("InEnglish")

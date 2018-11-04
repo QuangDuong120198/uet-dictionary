@@ -93,6 +93,8 @@ Sau đó mở trình duyệt, gõ đường dẫn như thông báo trong termina
         <Menu />
         <Content />
     </Layout>
+    <InsertModal />
+    <EditModal />
 </App>
 ```
 * `state` được quản lý bởi `class App`, "đổ xuống" các component con thông qua `props`. Cấu trúc của `state`:
