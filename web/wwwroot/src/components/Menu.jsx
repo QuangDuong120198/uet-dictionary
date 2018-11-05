@@ -41,7 +41,7 @@ export default class Menu extends React.Component
 
     handleClickList(e)
     {
-        this.props.setCurrentWord(+e.target.dataset.wordId);
+        this.props.setCurrentWord(e.target.dataset.wordId);
     }
 
     render()
@@ -57,12 +57,13 @@ export default class Menu extends React.Component
                         </span>
                     </div>
                     <input
-                    type="text"
-                    className="form-control" 
-                    placeholder="Search..."
-                    value={this.props.searchInput}
-                    onChange={this.props.handleSearchBoxChange}
-                    aria-expanded={true} />
+                        type="text"
+                        className="form-control" 
+                        placeholder="Search..."
+                        value={this.props.searchInput}
+                        onChange={this.props.handleSearchBoxChange}
+                        aria-expanded={true}
+                    />
                     <div className="search-icon">
                         <span>
                             <i className="fa fa-search"></i>

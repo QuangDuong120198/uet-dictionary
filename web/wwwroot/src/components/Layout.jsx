@@ -14,11 +14,17 @@ export default class Layout extends React.Component
         return (
             <div>
                 <Menu
-                data={this.props.data}
-                searchInput={this.props.searchInput}
-                handleSearchBoxChange={this.props.handleSearchBoxChange}
+                    data={this.props.data}
+                    searchInput={this.props.searchInput}
+                    handleSearchBoxChange={this.props.handleSearchBoxChange}
+                    setCurrentWord={this.props.setCurrentWord}
                 />
-                <Content />
+                <Content
+                    data={this.props.data}
+                    currentWord={this.props.currentWord}
+                    handleInsertModalShow={this.props.handleInsertModalShow}
+                    handleInsertModalHide={this.props.handleInsertModalHide}
+                />
             </div>
         );
     }

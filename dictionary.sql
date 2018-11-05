@@ -1,0 +1,1 @@
+UPDATE [Words] SET [Content] = '"[{\"type\":\"danh từ\",\"meaningsAndExamples\":[{\"meaning\":\"con mèo\",\"examples\":[{\"inEnglish\":\"Cat don''t like to get wet.\",\"inVietnamese\":\"Mèo không thích bị ướt.\"}]}]}]"' WHERE [ID] = 1;

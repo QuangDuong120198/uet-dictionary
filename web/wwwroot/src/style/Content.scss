@@ -46,14 +46,17 @@
             font-style: italic;
             display: flex;
             align-items: center;
-            & > span {
+            & > div {
                 margin-right: 15px;
             }
         }
-        .word-details {
-            ul {
-                margin-left: 0;
-                list-style-type: square;
+        .word-content {
+            .word-meanings-and-examples {
+                padding-left: 20px;
+                .word-example {
+                    padding-left: 20px;
+                    padding-bottom: 10px;
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Modal, Grid, Row, Col } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 export default class InsertModal extends React.Component
 {
@@ -13,7 +13,10 @@ export default class InsertModal extends React.Component
         return (
             <div>
                 <Modal
-                bsSize="lg"
+                    bsSize="lg"
+                    show={this.props.insertModal.show}
+                    onHide={this.props.handleInsertModalHide}
+                    onShow={this.props.handleInsertModalShow}
                 >
                     <Modal.Header closeButton={true}>
                         <Modal.Title>Thêm từ mới</Modal.Title>

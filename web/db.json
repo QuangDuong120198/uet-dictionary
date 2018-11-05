@@ -1,47 +1,16 @@
 [
     {
-        "InEnglish": "cat",
-        "Details": [
+        "type": "danh từ",
+        "meaningsAndExamples": [
             {
-                "WordType": "danh từ",
-                "MeaningAndExample": [
+                "meaning": "con mèo",
+                "examples": [
                     {
-                        "Meaning": "con mèo",
-                        "Examples": [
-                            {
-                                "InEnglish": "Cats don't like to get wet.",
-                                "InVietnamese": "Mèo không thích bị ướt."
-                            },
-                            {
-                                "InEnglish": "Rain likes dogs and cats.",
-                                "InVietnamese": "Mưa tầm tã."
-                            }
-                        ]
+                        "inEnglish": "Cat don't like to get wet.",
+                        "inVietnamese": "Mèo không thích bị ướt."
                     }
                 ]
             }
         ]
-    },
-    {
-        "InEnglish": "attribute",
-        "Details": {
-            "Pronunciation": "",
-            "AllMeaningsAndExamples": [
-                {
-                    "WordType": "",
-                    "MeaningAndExample": [
-                        {
-                            "Meaning": "",
-                            "Examples": [
-                                {
-                                    "InEnglish": "",
-                                    "InVietnamese": ""
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
     }
 ]
