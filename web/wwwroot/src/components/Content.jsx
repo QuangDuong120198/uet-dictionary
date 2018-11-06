@@ -32,7 +32,7 @@ export default class Content extends React.Component
                                 className="fa fa-2x fa-volume-up"
                                 style={{ cursor: "pointer" }}
                                 title="Click để nghe phát âm"
-                                onClick={_this.speak}
+                                onClick={() => { _this.speak(); }}
                             >
                             </i>
                         </div>

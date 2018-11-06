@@ -4,149 +4,378 @@ import Layout from "./components/Layout";
 import InsertModal from "./components/modal/Insert";
 import EditModal from "./components/modal/Edit";
 
-export default class App extends React.Component
-{
-    constructor(props)
-    {
-        super(props);
-        this.state = {
-            data: [],
-            searchInput: "",
-            currentWord: {
-                id: 0,
-                inEnglish: "",
-                pronunciation: "",
-                content: ""
-            },
-            insertModal: {
-                show: false,
-                data: {
-                    id: 0,
-                    inEnglish: "",
-                    pronunciation: "",
-                    content: ""
+export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+      searchInput: "",
+      currentWord: {
+        id: 0,
+        inEnglish: "",
+        pronunciation: "",
+        content: ""
+      },
+      insertModal: {
+        show: false,
+        data: {
+          id: 0,
+          inEnglish: { value: "", message: "" },
+          pronunciation: { value: "", message: "" },
+          content: [
+            {
+              type: { value: "", message: "" },
+              meaningsAndExamples: [
+                {
+                  meaning: { value: "", message: "" },
+                  examples: [
+                    {
+                      inEnglish: { value: "", message: "" },
+                      inVietnamese: { value: "", message: "" }
+                    }
+                  ]
                 }
-            },
-            editModal: {
-                show: false,
-                data: {
-                    id: 0,
-                    inEnglish: "",
-                    pronunciation: "",
-                    content: ""
-                }
+              ]
             }
-        };
-        this.handleSearchBoxChange = this.handleSearchBoxChange.bind(this);
-        this.setCurrentWord = this.setCurrentWord.bind(this);
-
-        this.handleInsertModalShow = this.handleInsertModalShow.bind(this);
-        this.handleInsertModalHide = this.handleInsertModalHide.bind(this);
-    }
-
-    componentDidMount()
-    {
-        this.updateDictionary();
-    }
-
-    updateDictionary()
-    {
-        axios.post("/home/getdictionary")
-        .then((response) => {
-            this.setState({
-                data: response.data
-            });
-        })
-        .catch((err) => {
-            console.warn(err.message);
-        });
-    }
-
-    setCurrentWord(id = 0)
-    {
-        let empty = {
-            id: 0,
-            inEnglish: "",
-            pronunciation: "",
-            content: ""
-        };
-        if (Number(id) !== NaN && Number(id) > 0) {
-            let result = this.state.data.filter((currentWordValue, currentWordIndex, wordArray) => {
-                return currentWordValue.id === Number(id);
-            });
-            let word = result.length ? result[0] : empty;
-            this.setState({
-                currentWord: word
-            });
-        } else {
-            this.setState({
-                currentWord: empty
-            });
+          ]
         }
-    }
-
-    handleSearchBoxChange(e)
-    {
-        this.setState({
-            searchInput: e.target.value
-        });
-    }
-
-    handleInsertModalShow()
-    {
-        this.setState({
-            insertModal: {
-                show: true,
-                data: {
-                    id: 0,
-                    inEnglish: "",
-                    pronunciation: "",
-                    content: ""
+      },
+      editModal: {
+        show: false,
+        data: {
+          id: 0,
+          inEnglish: { value: "", message: "" },
+          pronunciation: { value: "", message: "" },
+          content: [
+            {
+              type: { value: "", message: "" },
+              meaningsAndExamples: [
+                {
+                  meaning: { value: "", message: "" },
+                  examples: [
+                    {
+                      inEnglish: { value: "", message: "" },
+                      inVietnamese: { value: "", message: "" }
+                    }
+                  ]
                 }
+              ]
             }
-        });
-    }
+          ]
+        }
+      }
+    };
+    this.handleSearchBoxChange = this.handleSearchBoxChange.bind(this);
+    this.setCurrentWord = this.setCurrentWord.bind(this);
 
-    handleInsertModalHide()
-    {
+    this.handleInsertModalShow = this.handleInsertModalShow.bind(this);
+    this.handleInsertModalHide = this.handleInsertModalHide.bind(this);
+
+    this.handleInsertModalWordInEnglishChange = this.handleInsertModalWordInEnglishChange.bind(this);
+    this.handleInsertModalWordPronunciationChange = this.handleInsertModalWordPronunciationChange.bind(this);
+    this.handleInsertModalWordTypeChange = this.handleInsertModalWordTypeChange.bind(this);
+    this.handleInsertModalWordMeaningChange = this.handleInsertModalWordMeaningChange.bind(this);
+    this.handleInsertModalWordExampleInEnglishChange = this.handleInsertModalWordExampleInEnglishChange.bind(this);
+    this.handleInsertModalWordExampleInVietnameseChange = this.handleInsertModalWordExampleInVietnameseChange.bind(this);
+
+    this.handleInsertModalAddExample = this.handleInsertModalAddExample.bind(this);
+    this.handleInsertModalRemoveExample = this.handleInsertModalRemoveExample.bind(this);
+  }
+
+  componentDidMount() {
+    this.updateDictionary();
+  }
+
+  updateDictionary() {
+    axios.post("/home/getdictionary")
+      .then((response) => {
         this.setState({
-            insertModal: {
-                show: false,
-                data: {
-                    id: 0,
-                    inEnglish: "",
-                    pronunciation: "",
-                    content: ""
-                }
-            }
+          data: response.data
         });
+      })
+      .catch((err) => {
+        console.warn(err.message);
+      });
+  }
+
+  setCurrentWord(id = 0) {
+    let empty = {
+      id: 0,
+      inEnglish: "",
+      pronunciation: "",
+      content: ""
+    };
+    if (Number(id) !== NaN && Number(id) > 0) {
+      let result = this.state.data.filter((currentWordValue, currentWordIndex, wordArray) => {
+        return currentWordValue.id === Number(id);
+      });
+      let word = result.length ? result[0] : empty;
+      this.setState({
+        currentWord: word
+      });
+    } else {
+      this.setState({
+        currentWord: empty
+      });
+    }
+  }
+
+  handleSearchBoxChange(event) {
+    this.setState({
+      searchInput: event.target.value
+    });
+  }
+
+  handleInsertModalShow() {
+    this.setState({
+      insertModal: {
+        show: true,
+        data: {
+          id: 0,
+          inEnglish: { value: "", message: "" },
+          pronunciation: { value: "", message: "" },
+          content: [
+            {
+              type: { value: "", message: "" },
+              meaningsAndExamples: [
+                {
+                  meaning: { value: "", message: "" },
+                  examples: [
+                    {
+                      inEnglish: { value: "", message: "" },
+                      inVietnamese: { value: "", message: "" }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    });
+  }
+
+  handleInsertModalHide() {
+    this.setState({
+      insertModal: {
+        show: false,
+        data: {
+          id: 0,
+          inEnglish: { value: "", message: "" },
+          pronunciation: { value: "", message: "" },
+          content: [
+            {
+              type: { value: "", message: "" },
+              meaningsAndExamples: [
+                {
+                  meaning: { value: "", message: "" },
+                  examples: [
+                    {
+                      inEnglish: { value: "", message: "" },
+                      inVietnamese: { value: "", message: "" }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    });
+  }
+
+  handleInsertModalWordInEnglishChange(event) {
+    let state = this.state;
+    let value = event.target.value;
+    state.insertModal.data.inEnglish.value = value;
+    if (value.trim() === "") {
+      state.insertModal.data.inEnglish.message = "Không được để trống.";
+    } else if (/(^\s|\s$)/g.test(value)) {
+      state.insertModal.data.inEnglish.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng.";
+    } else if (!/[A-Za-z\s]+$/.test(value.trim())) {
+      state.insertModal.data.inEnglish.message = "Chỉ sử dụng các kí tự A-Z và khoảng trắng.";
+    } else {
+      state.insertModal.data.inEnglish.message = "";
+    }
+    this.setState(state);
+  }
+
+  handleInsertModalWordPronunciationChange(event) {
+    let state = this.state;
+    let value = event.target.value;
+    state.insertModal.data.pronunciation.value = value;
+    if (value.trim() === "") {
+      state.insertModal.data.pronunciation.message = "Không được để trống";
+    } else if (/^\s|\s$/g.test(value)) {
+      state.insertModal.data.pronunciation.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
+    } else {
+      state.insertModal.data.pronunciation.message = "";
+    }
+    this.setState(state);
+  }
+
+  handleInsertModalWordTypeChange(contentIndex, event) {
+    let state = this.state;
+    let value = event.target.value;
+    state.insertModal.data
+      .content[contentIndex].type.value = value;
+    if (value.trim() === "") {
+      state.insertModal.data
+        .content[contentIndex].type.message = "Không được để trống";
+    } else if (/^\s|\s$/g.test(value)) {
+      state.insertModal.data
+        .content[contentIndex].type.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
+    } else {
+      state.insertModal.data
+        .content[contentIndex].type.message = "";
+    }
+    this.setState(state);
+  }
+
+  handleInsertModalWordMeaningChange(contentIndex, meaningAndExampleIndex, event) {
+    let state = this.state;
+    let value = event.target.value;
+
+    let meaning = state.insertModal.data
+      .content[contentIndex]
+      .meaningsAndExamples[meaningAndExampleIndex]
+      .meaning;
+
+    meaning.value = value;
+
+    if (value.trim() === "") {
+      meaning.message = "Không được để trống";
+    } else if (/^\s|\s$/g.test(value)) {
+      meaning.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
+    } else {
+      meaning.message = "";
+    }
+    state.insertModal.data
+      .content[contentIndex]
+      .meaningsAndExamples[meaningAndExampleIndex]
+      .meaning = meaning;
+
+    this.setState(state);
+  }
+
+  handleInsertModalWordExampleInEnglishChange(contentIndex, meaningAndExampleIndex, exampleIndex, event) {
+    let state = this.state;
+    let value = event.target.value;
+
+    let inEnglish = state.insertModal.data
+      .content[contentIndex]
+      .meaningsAndExamples[meaningAndExampleIndex]
+      .examples[exampleIndex]
+      .inEnglish;
+    inEnglish.value = value;
+
+    if (value.trim() === "") {
+      inEnglish.message = "Không được để trống";
+    } else if (/^\s|\s$/g.test(value)) {
+      inEnglish.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
+    } else {
+      inEnglish.message = "";
     }
 
-    render()
-    {
-        return (
-            <div>
-                <Layout
-                    data={this.state.data}
-                    searchInput={this.state.searchInput}
-                    handleSearchBoxChange={this.handleSearchBoxChange}
-                    currentWord={this.state.currentWord}
-                    setCurrentWord={this.setCurrentWord}
+    state.insertModal.data
+      .content[contentIndex]
+      .meaningsAndExamples[meaningAndExampleIndex]
+      .examples[exampleIndex]
+      .inEnglish = inEnglish;
+    this.setState(state);
 
-                    handleInsertModalShow={this.handleInsertModalShow}
-                    handleInsertModalHide={this.handleInsertModalHide}
-                />
-                <InsertModal
-                    data={this.state.data}
-                    insertModal={this.state.insertModal}
-                    handleInsertModalShow={this.handleInsertModalShow}
-                    handleInsertModalHide={this.handleInsertModalHide}
-                />
-                <EditModal
-                    data={this.state.data}
-                />
-            </div>
-        );
+  }
+
+  handleInsertModalWordExampleInVietnameseChange(contentIndex, meaningAndExampleIndex, exampleIndex, event) {
+    let state = this.state;
+    let value = event.target.value;
+
+    let inVietnamese = state.insertModal.data
+      .content[contentIndex]
+      .meaningsAndExamples[meaningAndExampleIndex]
+      .examples[exampleIndex]
+      .inVietnamese;
+    inVietnamese.value = value;
+
+    if (value.trim() === "") {
+      inVietnamese.message = "Không được để trống";
+    } else if (/^\s|\s$/g.test(value)) {
+      inVietnamese.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
+    } else {
+      inVietnamese.message = "";
     }
+
+    state.insertModal.data
+      .content[contentIndex]
+      .meaningsAndExamples[meaningAndExampleIndex]
+      .examples[exampleIndex]
+      .inVietnamese = inVietnamese;
+    this.setState(state);
+  }
+
+  
+
+  handleInsertModalAddExample(contentIndex, meaningAndExampleIndex)
+  {
+    let state = this.state;
+    if (state.insertModal.data.content[contentIndex].meaningsAndExamples[meaningAndExampleIndex].examples.length < 3) {
+      state.insertModal.data
+      .content[contentIndex]
+      .meaningsAndExamples[meaningAndExampleIndex]
+      .examples
+      .push({
+        inEnglish: { value: "", message: "" },
+        inVietnamese: { value: "", message: "" }
+      });
+      this.setState(state);
+    }
+  }
+
+  handleInsertModalRemoveExample(contentIndex, meaningAndExampleIndex, exampleIndex)
+  {
+    if (this.state.insertModal.data.content[contentIndex].meaningsAndExamples[meaningAndExampleIndex].examples.length > 1) {
+      let state = this.state;
+      state.insertModal.data
+        .content[contentIndex]
+        .meaningsAndExamples[meaningAndExampleIndex]
+        .examples
+        .splice(exampleIndex, 1);
+      this.setState(state);
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <Layout
+          data={this.state.data}
+          searchInput={this.state.searchInput}
+          handleSearchBoxChange={this.handleSearchBoxChange}
+          currentWord={this.state.currentWord}
+          setCurrentWord={this.setCurrentWord}
+
+          handleInsertModalShow={this.handleInsertModalShow}
+          handleInsertModalHide={this.handleInsertModalHide}
+        />
+        <InsertModal
+          data={this.state.data}
+          insertModal={this.state.insertModal}
+          handleInsertModalShow={this.handleInsertModalShow}
+          handleInsertModalHide={this.handleInsertModalHide}
+          handleInsertModalWordInEnglishChange={this.handleInsertModalWordInEnglishChange}
+          handleInsertModalWordPronunciationChange={this.handleInsertModalWordPronunciationChange}
+          handleInsertModalWordTypeChange={this.handleInsertModalWordTypeChange}
+          handleInsertModalWordMeaningChange={this.handleInsertModalWordMeaningChange}
+          handleInsertModalWordExampleInEnglishChange={this.handleInsertModalWordExampleInEnglishChange}
+          handleInsertModalWordExampleInVietnameseChange={this.handleInsertModalWordExampleInVietnameseChange}
+          handleInsertModalAddExample={this.handleInsertModalAddExample}
+          handleInsertModalRemoveExample={this.handleInsertModalRemoveExample}
+        />
+        <EditModal
+          data={this.state.data}
+        />
+      </div>
+    );
+  }
 }
 
