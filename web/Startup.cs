@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using UetDictionaryWeb.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace UetDictionaryWeb
 {
@@ -32,7 +34,11 @@ namespace UetDictionaryWeb
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+              .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+              .AddJsonOptions(options => {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+              });
             services.AddDbContext<DictionaryContext>(
                 options => options.UseSqlite("Data Source=dictionary.db")
             );

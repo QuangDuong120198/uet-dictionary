@@ -3,6 +3,7 @@ import axios from "axios";
 import Layout from "./components/Layout";
 import InsertModal from "./components/modal/Insert";
 import EditModal from "./components/modal/Edit";
+import Validate from "./components/Validate";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -80,6 +81,11 @@ export default class App extends React.Component {
 
     this.handleInsertModalAddExample = this.handleInsertModalAddExample.bind(this);
     this.handleInsertModalRemoveExample = this.handleInsertModalRemoveExample.bind(this);
+    this.handleInsertModalAddMeaning = this.handleInsertModalAddMeaning.bind(this);
+    this.handleInsertModalRemoveMeaning = this.handleInsertModalRemoveMeaning.bind(this);
+    this.handleInsertModalAddType = this.handleInsertModalAddType.bind(this);
+    this.handleInsertModalRemoveType = this.handleInsertModalRemoveType.bind(this);
+    this.handleInsertModalSave = this.handleInsertModalSave.bind(this);
   }
 
   componentDidMount() {
@@ -188,15 +194,7 @@ export default class App extends React.Component {
     let state = this.state;
     let value = event.target.value;
     state.insertModal.data.inEnglish.value = value;
-    if (value.trim() === "") {
-      state.insertModal.data.inEnglish.message = "Không được để trống.";
-    } else if (/(^\s|\s$)/g.test(value)) {
-      state.insertModal.data.inEnglish.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng.";
-    } else if (!/[A-Za-z\s]+$/.test(value.trim())) {
-      state.insertModal.data.inEnglish.message = "Chỉ sử dụng các kí tự A-Z và khoảng trắng.";
-    } else {
-      state.insertModal.data.inEnglish.message = "";
-    }
+    Validate.wordInEnglish(state.insertModal.data.inEnglish);
     this.setState(state);
   }
 
@@ -204,13 +202,7 @@ export default class App extends React.Component {
     let state = this.state;
     let value = event.target.value;
     state.insertModal.data.pronunciation.value = value;
-    if (value.trim() === "") {
-      state.insertModal.data.pronunciation.message = "Không được để trống";
-    } else if (/^\s|\s$/g.test(value)) {
-      state.insertModal.data.pronunciation.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
-    } else {
-      state.insertModal.data.pronunciation.message = "";
-    }
+    Validate.wordPronunciation(state.insertModal.data.pronunciation);
     this.setState(state);
   }
 
@@ -219,16 +211,7 @@ export default class App extends React.Component {
     let value = event.target.value;
     state.insertModal.data
       .content[contentIndex].type.value = value;
-    if (value.trim() === "") {
-      state.insertModal.data
-        .content[contentIndex].type.message = "Không được để trống";
-    } else if (/^\s|\s$/g.test(value)) {
-      state.insertModal.data
-        .content[contentIndex].type.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
-    } else {
-      state.insertModal.data
-        .content[contentIndex].type.message = "";
-    }
+    Validate.wordType(state.insertModal.data.content[contentIndex].type);
     this.setState(state);
   }
 
@@ -243,13 +226,8 @@ export default class App extends React.Component {
 
     meaning.value = value;
 
-    if (value.trim() === "") {
-      meaning.message = "Không được để trống";
-    } else if (/^\s|\s$/g.test(value)) {
-      meaning.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
-    } else {
-      meaning.message = "";
-    }
+    Validate.wordMeaning(meaning);
+    
     state.insertModal.data
       .content[contentIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
@@ -269,13 +247,7 @@ export default class App extends React.Component {
       .inEnglish;
     inEnglish.value = value;
 
-    if (value.trim() === "") {
-      inEnglish.message = "Không được để trống";
-    } else if (/^\s|\s$/g.test(value)) {
-      inEnglish.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
-    } else {
-      inEnglish.message = "";
-    }
+    Validate.wordExampleInEnglish(inEnglish);
 
     state.insertModal.data
       .content[contentIndex]
@@ -297,13 +269,7 @@ export default class App extends React.Component {
       .inVietnamese;
     inVietnamese.value = value;
 
-    if (value.trim() === "") {
-      inVietnamese.message = "Không được để trống";
-    } else if (/^\s|\s$/g.test(value)) {
-      inVietnamese.message = "Không được bắt đầu hoặc kết thúc bằng khoảng trắng";
-    } else {
-      inVietnamese.message = "";
-    }
+    Validate.wordExampleInVietnamese(inVietnamese);
 
     state.insertModal.data
       .content[contentIndex]
@@ -313,35 +279,94 @@ export default class App extends React.Component {
     this.setState(state);
   }
 
-  
-
-  handleInsertModalAddExample(contentIndex, meaningAndExampleIndex)
+  handleInsertModalAddType()
   {
     let state = this.state;
-    if (state.insertModal.data.content[contentIndex].meaningsAndExamples[meaningAndExampleIndex].examples.length < 3) {
-      state.insertModal.data
-      .content[contentIndex]
+    state.insertModal.data
+      .content
+      .push({
+        type: { value: "", message: "" },
+        meaningsAndExamples: [
+          {
+            meaning: { value: "", message: "" },
+            examples: [
+              {
+                inEnglish: { value: "", message: "" },
+                inVietnamese: { value: "", message: "" }
+              }
+            ]
+          }
+        ]
+      });
+    this.setState(state);
+  }
+
+  handleInsertModalRemoveType(typeIndex)
+  {
+    let state = this.state;
+    if (state.insertModal.data.content.length > 1) {
+      state.insertModal.data.content.splice(typeIndex, 1);
+      this.setState(state);
+    }
+  }
+
+  handleInsertModalAddMeaning(typeIndex)
+  {
+    let state = this.state;
+    state.insertModal.data
+      .content[typeIndex]
+      .meaningsAndExamples
+      .push({
+        meaning: { value: "", message: "" },
+        examples: [
+          {
+            inEnglish: { value: "", message: "" },
+            inVietnamese: { value: "", message: "" }
+          }
+        ]
+      });
+    this.setState(state);
+  }
+
+  handleInsertModalRemoveMeaning(typeIndex, meaningAndExampleIndex)
+  {
+    let state = this.state;
+    if (state.insertModal.data.content[typeIndex].meaningsAndExamples.length > 1)
+    {
+      state.insertModal.data.content[typeIndex].meaningsAndExamples.splice(meaningAndExampleIndex, 1);
+      this.setState(state);
+    }
+  }
+
+  handleInsertModalAddExample(typeIndex, meaningAndExampleIndex) 
+  {
+    let state = this.state;
+    state.insertModal.data
+      .content[typeIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
       .examples
       .push({
         inEnglish: { value: "", message: "" },
         inVietnamese: { value: "", message: "" }
       });
-      this.setState(state);
-    }
+    this.setState(state);
   }
 
-  handleInsertModalRemoveExample(contentIndex, meaningAndExampleIndex, exampleIndex)
-  {
-    if (this.state.insertModal.data.content[contentIndex].meaningsAndExamples[meaningAndExampleIndex].examples.length > 1) {
+  handleInsertModalRemoveExample(typeIndex, meaningAndExampleIndex, exampleIndex) {
+    if (this.state.insertModal.data.content[typeIndex].meaningsAndExamples[meaningAndExampleIndex].examples.length > 1) {
       let state = this.state;
       state.insertModal.data
-        .content[contentIndex]
+        .content[typeIndex]
         .meaningsAndExamples[meaningAndExampleIndex]
         .examples
         .splice(exampleIndex, 1);
       this.setState(state);
     }
+  }
+
+  handleInsertModalSave()
+  {
+    
   }
 
   render() {
@@ -370,6 +395,11 @@ export default class App extends React.Component {
           handleInsertModalWordExampleInVietnameseChange={this.handleInsertModalWordExampleInVietnameseChange}
           handleInsertModalAddExample={this.handleInsertModalAddExample}
           handleInsertModalRemoveExample={this.handleInsertModalRemoveExample}
+          handleInsertModalAddMeaning={this.handleInsertModalAddMeaning}
+          handleInsertModalRemoveMeaning={this.handleInsertModalRemoveMeaning}
+          handleInsertModalAddType={this.handleInsertModalAddType}
+          handleInsertModalRemoveType={this.handleInsertModalRemoveType}
+          handleInsertModalSave={this.handleInsertModalSave}
         />
         <EditModal
           data={this.state.data}
