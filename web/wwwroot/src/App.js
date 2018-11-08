@@ -12,10 +12,10 @@ export default class App extends React.Component {
       data: [],
       searchInput: "",
       currentWord: {
-        id: 0,
-        inEnglish: "",
-        pronunciation: "",
-        content: ""
+        ID: 0,
+        InEnglish: "",
+        Pronunciation: "",
+        Content: ""
       },
       insertModal: {
         show: false,
@@ -106,14 +106,14 @@ export default class App extends React.Component {
 
   setCurrentWord(id = 0) {
     let empty = {
-      id: 0,
-      inEnglish: "",
-      pronunciation: "",
-      content: ""
+      ID: 0,
+      InEnglish: "",
+      Pronunciation: "",
+      Content: ""
     };
     if (Number(id) !== NaN && Number(id) > 0) {
       let result = this.state.data.filter((currentWordValue, currentWordIndex, wordArray) => {
-        return currentWordValue.id === Number(id);
+        return currentWordValue.ID === Number(id);
       });
       let word = result.length ? result[0] : empty;
       this.setState({
@@ -366,7 +366,11 @@ export default class App extends React.Component {
 
   handleInsertModalSave()
   {
-    
+    let insertModalState = this.state.insertModal;
+    console.log(Validate.insertWord(insertModalState));
+    this.setState({
+      insertModal: insertModalState
+    });
   }
 
   render() {

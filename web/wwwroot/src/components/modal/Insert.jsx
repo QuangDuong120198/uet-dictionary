@@ -66,7 +66,7 @@ export default class InsertModal extends React.Component {
                               type="text"
                               className="form-control"
                               value={currentTypeValue.type.value}
-                              onChange={(event) => { this.props.handleInsertModalWordTypeChange(currentContentIndex, event); }}
+                              onChange={(event) => { this.props.handleInsertModalWordTypeChange(currentTypeIndex, event); }}
                             />
                             <div className="text-danger">{currentTypeValue.type.message}</div>
                             {
@@ -110,12 +110,12 @@ export default class InsertModal extends React.Component {
                                                     <div>
                                                       <Grid fluid={true}>
                                                         <Row className="show-grid">
-                                                          <Col sm={6} xs={12}>
+                                                          <Col md={6} sm={12}>
                                                             <label>Tiếng Anh</label>
                                                             <input type="text" className="form-control" value={currentExampleValue.inEnglish.value} onChange={(event) => { this.props.handleInsertModalWordExampleInEnglishChange(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex, event); }} />
                                                             <div className="text-danger">{currentExampleValue.inEnglish.message}</div>
                                                           </Col>
-                                                          <Col sm={6} xs={12}>
+                                                          <Col md={6} sm={12}>
                                                             <label>Tiếng Việt</label>
                                                             <input type="text" className="form-control" value={currentExampleValue.inVietnamese.value} onChange={(event) => { this.props.handleInsertModalWordExampleInVietnameseChange(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex, event); }} />
                                                             <div className="text-danger">{currentExampleValue.inVietnamese.message}</div>
