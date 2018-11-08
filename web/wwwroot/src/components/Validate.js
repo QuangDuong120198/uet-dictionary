@@ -123,20 +123,26 @@ module.exports = {
     // }
     let isValid = true;
 
+    this.wordExampleInEnglish(insertModalState.data.inEnglish);
+    this.wordPronunciation(insertModalState.data.pronunciation);
+
     isValid = isValid && this.wordExampleInEnglish(insertModalState.data.inEnglish);
-    
     isValid = isValid && this.wordPronunciation(insertModalState.data.pronunciation);
 
     insertModalState.data.content.forEach((currentTypeValue) => {
 
+      this.wordType(currentTypeValue.type);
       isValid = isValid && this.wordType(currentTypeValue.type);
 
       currentTypeValue.meaningsAndExamples.forEach((currentMeaningValue) => {
         
+        this.wordType(currentMeaningValue.meaning);
         isValid = isValid && this.wordType(currentMeaningValue.meaning);
 
         currentMeaningValue.examples.forEach((currentExampleValue) => {
 
+          this.wordExampleInEnglish(currentExampleValue.inEnglish);
+          this.wordExampleInVietnamese(currentExampleValue.inVietnamese);
           isValid = isValid && this.wordExampleInEnglish(currentExampleValue.inEnglish);
           isValid = isValid && this.wordExampleInVietnamese(currentExampleValue.inVietnamese);
 

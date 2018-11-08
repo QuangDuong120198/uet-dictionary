@@ -227,7 +227,7 @@ export default class App extends React.Component {
     meaning.value = value;
 
     Validate.wordMeaning(meaning);
-    
+
     state.insertModal.data
       .content[contentIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
@@ -279,8 +279,7 @@ export default class App extends React.Component {
     this.setState(state);
   }
 
-  handleInsertModalAddType()
-  {
+  handleInsertModalAddType() {
     let state = this.state;
     state.insertModal.data
       .content
@@ -301,8 +300,7 @@ export default class App extends React.Component {
     this.setState(state);
   }
 
-  handleInsertModalRemoveType(typeIndex)
-  {
+  handleInsertModalRemoveType(typeIndex) {
     let state = this.state;
     if (state.insertModal.data.content.length > 1) {
       state.insertModal.data.content.splice(typeIndex, 1);
@@ -310,8 +308,7 @@ export default class App extends React.Component {
     }
   }
 
-  handleInsertModalAddMeaning(typeIndex)
-  {
+  handleInsertModalAddMeaning(typeIndex) {
     let state = this.state;
     state.insertModal.data
       .content[typeIndex]
@@ -328,18 +325,15 @@ export default class App extends React.Component {
     this.setState(state);
   }
 
-  handleInsertModalRemoveMeaning(typeIndex, meaningAndExampleIndex)
-  {
+  handleInsertModalRemoveMeaning(typeIndex, meaningAndExampleIndex) {
     let state = this.state;
-    if (state.insertModal.data.content[typeIndex].meaningsAndExamples.length > 1)
-    {
+    if (state.insertModal.data.content[typeIndex].meaningsAndExamples.length > 1) {
       state.insertModal.data.content[typeIndex].meaningsAndExamples.splice(meaningAndExampleIndex, 1);
       this.setState(state);
     }
   }
 
-  handleInsertModalAddExample(typeIndex, meaningAndExampleIndex) 
-  {
+  handleInsertModalAddExample(typeIndex, meaningAndExampleIndex) {
     let state = this.state;
     state.insertModal.data
       .content[typeIndex]
@@ -364,13 +358,76 @@ export default class App extends React.Component {
     }
   }
 
-  handleInsertModalSave()
-  {
+  handleInsertModalSave() {
     let insertModalState = this.state.insertModal;
-    console.log(Validate.insertWord(insertModalState));
-    this.setState({
-      insertModal: insertModalState
-    });
+    Validate.insertWord(insertModalState);
+    let isValid = Validate.insertWord(insertModalState);
+    this.setState(
+      { insertModal: insertModalState },
+      () => {
+        if (isValid) {
+          let jsonObject = {
+            ID: null,
+            InEnglish: "",
+            Pronunciation: "",
+            Content: ""
+          };
+          jsonObject.InEnglish = this.state.insertModal.data.inEnglish;
+          jsonObject.Pronunciation = this.state.insertModal.data.pronunciation;
+
+          let insertModalContentWithoutMessage = this.state.insertModal.data.content;
+          insertModalContentWithoutMessage.forEach((currentTypeValue, currentTypeIndex, typeArray) => {
+
+            typeArray[currentTypeIndex].type = currentTypeValue.type.value;
+            delete typeArray[currentTypeIndex].type.value;
+            delete typeArray[currentTypeIndex].type.message;
+
+            currentTypeValue.meaningsAndExamples.forEach((currentMeaningValue, currentMeaningIndex) => {
+
+              typeArray[currentMeaningIndex]
+                .meaningsAndExamples[currentMeaningIndex]
+                .meaning = currentMeaningValue.meaning.value;
+              delete typeArray[currentMeaningIndex].meaningsAndExamples[currentMeaningIndex].meaning.value;
+              delete typeArray[currentMeaningIndex].meaningsAndExamples[currentMeaningIndex].meaning.message;
+
+              currentMeaningValue.examples.forEach((currentExampleValue, currentExampleIndex) => {
+
+                typeArray[currentMeaningIndex]
+                  .meaningsAndExamples[currentMeaningIndex]
+                  .examples[currentExampleIndex]
+                  .inEnglish = currentExampleValue.inEnglish.value;
+
+                typeArray[currentMeaningIndex]
+                  .meaningsAndExamples[currentMeaningIndex]
+                  .examples[currentExampleIndex]
+                  .inVietnamese = currentExampleValue.inVietnamese.value;
+
+                delete typeArray[currentMeaningIndex]
+                  .meaningsAndExamples[currentMeaningIndex]
+                  .examples[currentExampleIndex]
+                  .inEnglish.value;
+                delete typeArray[currentMeaningIndex]
+                  .meaningsAndExamples[currentMeaningIndex]
+                  .examples[currentExampleIndex]
+                  .inEnglish.message;
+                delete typeArray[currentMeaningIndex]
+                  .meaningsAndExamples[currentMeaningIndex]
+                  .examples[currentExampleIndex]
+                  .inVietnamese.value;
+                delete typeArray[currentMeaningIndex]
+                  .meaningsAndExamples[currentMeaningIndex]
+                  .examples[currentExampleIndex]
+                  .inVietnamese.message;
+              });
+            });
+          });
+
+          jsonObject.Content = JSON.stringify(insertModalContentWithoutMessage);
+
+          console.table(jsonObject);
+        }
+      }
+    );
   }
 
   render() {
@@ -382,7 +439,6 @@ export default class App extends React.Component {
           handleSearchBoxChange={this.handleSearchBoxChange}
           currentWord={this.state.currentWord}
           setCurrentWord={this.setCurrentWord}
-
           handleInsertModalShow={this.handleInsertModalShow}
           handleInsertModalHide={this.handleInsertModalHide}
         />
