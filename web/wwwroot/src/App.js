@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import Snackbar from "node-snackbar";
 import Layout from "./components/Layout";
 import InsertModal from "./components/modal/Insert";
 import EditModal from "./components/modal/Edit";
@@ -367,18 +368,23 @@ export default class App extends React.Component {
       () => {
         if (isValid) {
           let jsonObject = {
-            ID: null,
+            ID: 0,
             InEnglish: "",
             Pronunciation: "",
             Content: ""
           };
-          jsonObject.InEnglish = this.state.insertModal.data.inEnglish;
-          jsonObject.Pronunciation = this.state.insertModal.data.pronunciation;
+          jsonObject.InEnglish = this.state.insertModal.data.inEnglish.value;
+          jsonObject.Pronunciation = this.state.insertModal.data.pronunciation.value.replace(/\'/g, "''");
+
+          delete jsonObject.InEnglish.value;
+          delete jsonObject.InEnglish.message;
+          delete jsonObject.Pronunciation.value;
+          delete jsonObject.Pronunciation.message;
 
           let insertModalContentWithoutMessage = this.state.insertModal.data.content;
           insertModalContentWithoutMessage.forEach((currentTypeValue, currentTypeIndex, typeArray) => {
 
-            typeArray[currentTypeIndex].type = currentTypeValue.type.value;
+            typeArray[currentTypeIndex].type = currentTypeValue.type.value.replace(/\'/g, "''");
             delete typeArray[currentTypeIndex].type.value;
             delete typeArray[currentTypeIndex].type.message;
 
@@ -386,7 +392,7 @@ export default class App extends React.Component {
 
               typeArray[currentMeaningIndex]
                 .meaningsAndExamples[currentMeaningIndex]
-                .meaning = currentMeaningValue.meaning.value;
+                .meaning = currentMeaningValue.meaning.value.replace(/\'/g, "''");
               delete typeArray[currentMeaningIndex].meaningsAndExamples[currentMeaningIndex].meaning.value;
               delete typeArray[currentMeaningIndex].meaningsAndExamples[currentMeaningIndex].meaning.message;
 
@@ -395,12 +401,12 @@ export default class App extends React.Component {
                 typeArray[currentMeaningIndex]
                   .meaningsAndExamples[currentMeaningIndex]
                   .examples[currentExampleIndex]
-                  .inEnglish = currentExampleValue.inEnglish.value;
+                  .inEnglish = currentExampleValue.inEnglish.value.replace(/\'/g, "''");
 
                 typeArray[currentMeaningIndex]
                   .meaningsAndExamples[currentMeaningIndex]
                   .examples[currentExampleIndex]
-                  .inVietnamese = currentExampleValue.inVietnamese.value;
+                  .inVietnamese = currentExampleValue.inVietnamese.value.replace(/\'/g, "''");
 
                 delete typeArray[currentMeaningIndex]
                   .meaningsAndExamples[currentMeaningIndex]
@@ -424,7 +430,23 @@ export default class App extends React.Component {
 
           jsonObject.Content = JSON.stringify(insertModalContentWithoutMessage);
 
-          console.table(jsonObject);
+          axios.post("/home/inserttodictionary", jsonObject)
+            .then(() => {
+              this.handleInsertModalHide();
+              Snackbar.show({
+                text: "Đã thêm vào từ điển",
+                duration: 5000,
+                pos: "bottom-center",
+                showAction: false
+              });
+            })
+            .catch((err) => {
+              console.warn(err.message);
+            })
+            .then(() => {
+              this.handleInsertModalHide();
+              this.updateDictionary();
+            });
         }
       }
     );

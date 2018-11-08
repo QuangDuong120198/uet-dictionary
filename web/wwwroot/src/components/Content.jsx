@@ -9,7 +9,7 @@ export default class Content extends React.Component {
 
   speak() {
     let utter = new SpeechSynthesisUtterance();
-    utter.text = this.props.currentWord.inEnglish;
+    utter.text = this.props.currentWord.InEnglish;
     speechSynthesis.speak(utter);
   }
 
