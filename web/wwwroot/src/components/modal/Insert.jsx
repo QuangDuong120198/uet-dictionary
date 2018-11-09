@@ -17,7 +17,7 @@ export default class InsertModal extends React.Component {
           onShow={this.props.handleInsertModalShow}
         >
           <Modal.Header closeButton={true}>
-            <Modal.Title>Thêm từ mới</Modal.Title>
+            <Modal.Title><i className="fa fa-plus"></i>&nbsp;Thêm từ mới</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Grid fluid={true}>
@@ -27,7 +27,7 @@ export default class InsertModal extends React.Component {
                   <input
                     className="form-control"
                     value={modalData.inEnglish.value}
-                    onChange={this.props.handleInsertModalWordInEnglishChange}
+                    onChange={this.props.handleWordInEnglishChange}
                   />
                   <div className="text-danger">
                     {modalData.inEnglish.message}
@@ -38,7 +38,7 @@ export default class InsertModal extends React.Component {
                   <input
                     className="form-control"
                     value={modalData.pronunciation.value}
-                    onChange={this.props.handleInsertModalWordPronunciationChange}
+                    onChange={this.props.handleWordPronunciationChange}
                   />
                   <div className="text-danger">
                     {modalData.pronunciation.message}
@@ -56,7 +56,7 @@ export default class InsertModal extends React.Component {
                             <button
                               type="button"
                               className="close"
-                              onClick={() => { this.props.handleInsertModalRemoveType(currentTypeIndex); }}
+                              onClick={() => { this.props.handleRemoveType(currentTypeIndex); }}
                             >
                               &times;
                             </button>
@@ -66,7 +66,7 @@ export default class InsertModal extends React.Component {
                               type="text"
                               className="form-control"
                               value={currentTypeValue.type.value}
-                              onChange={(event) => { this.props.handleInsertModalWordTypeChange(currentTypeIndex, event); }}
+                              onChange={(event) => { this.props.handleWordTypeChange(currentTypeIndex, event); }}
                             />
                             <div className="text-danger">{currentTypeValue.type.message}</div>
                             {
@@ -78,13 +78,13 @@ export default class InsertModal extends React.Component {
                                       <button
                                         type="button"
                                         className="close"
-                                        onClick={() => { this.props.handleInsertModalRemoveMeaning(currentTypeIndex, currentMeaningAndExampleIndex); }}
+                                        onClick={() => { this.props.handleRemoveMeaning(currentTypeIndex, currentMeaningAndExampleIndex); }}
                                       >
                                         &times;
                                       </button>
                                     </Panel.Heading>
                                     <Panel.Body>
-                                      <input type="text" className="form-control" value={currentMeaningAndExampleValue.meaning.value} onChange={(event) => { this.props.handleInsertModalWordMeaningChange(currentTypeIndex, currentMeaningAndExampleIndex, event); }} />
+                                      <input type="text" className="form-control" value={currentMeaningAndExampleValue.meaning.value} onChange={(event) => { this.props.handleWordMeaningChange(currentTypeIndex, currentMeaningAndExampleIndex, event); }} />
                                       <div className="text-danger">{currentMeaningAndExampleValue.meaning.message}</div>
                                       <Panel bsStyle="success" style={{ marginTop: 15 }}>
                                         <Panel.Heading>
@@ -100,7 +100,7 @@ export default class InsertModal extends React.Component {
                                                     <button
                                                       type="button" className="close"
                                                       onClick={() => {
-                                                        this.props.handleInsertModalRemoveExample(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex)
+                                                        this.props.handleRemoveExample(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex)
                                                       }}
                                                     >
                                                       &times;
@@ -112,12 +112,12 @@ export default class InsertModal extends React.Component {
                                                         <Row className="show-grid">
                                                           <Col md={6} sm={12}>
                                                             <label>Tiếng Anh</label>
-                                                            <input type="text" className="form-control" value={currentExampleValue.inEnglish.value} onChange={(event) => { this.props.handleInsertModalWordExampleInEnglishChange(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex, event); }} />
+                                                            <input type="text" className="form-control" value={currentExampleValue.inEnglish.value} onChange={(event) => { this.props.handleWordExampleInEnglishChange(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex, event); }} />
                                                             <div className="text-danger">{currentExampleValue.inEnglish.message}</div>
                                                           </Col>
                                                           <Col md={6} sm={12}>
                                                             <label>Tiếng Việt</label>
-                                                            <input type="text" className="form-control" value={currentExampleValue.inVietnamese.value} onChange={(event) => { this.props.handleInsertModalWordExampleInVietnameseChange(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex, event); }} />
+                                                            <input type="text" className="form-control" value={currentExampleValue.inVietnamese.value} onChange={(event) => { this.props.handleWordExampleInVietnameseChange(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex, event); }} />
                                                             <div className="text-danger">{currentExampleValue.inVietnamese.message}</div>
                                                           </Col>
                                                         </Row>
@@ -132,7 +132,7 @@ export default class InsertModal extends React.Component {
                                         <Panel.Footer className="text-center">
                                           <Button
                                             bsStyle="info"
-                                            onClick={() => { this.props.handleInsertModalAddExample(currentTypeIndex, currentMeaningAndExampleIndex); }}
+                                            onClick={() => { this.props.handleAddExample(currentTypeIndex, currentMeaningAndExampleIndex); }}
                                           >
                                             Thêm ví dụ
                                           </Button>
@@ -147,7 +147,7 @@ export default class InsertModal extends React.Component {
                           <Panel.Footer className="text-center">
                             <Button
                               bsStyle="info"
-                              onClick={() => { this.props.handleInsertModalAddMeaning(currentTypeIndex); }}
+                              onClick={() => { this.props.handleAddMeaning(currentTypeIndex); }}
                             >
                               Thêm nghĩa
                             </Button>
@@ -161,7 +161,7 @@ export default class InsertModal extends React.Component {
               <Row className="show-grid">
                 <Col xs={12}>
                   <div className="text-center">
-                    <Button bsStyle="info" onClick={() => { this.props.handleInsertModalAddType() }}>
+                    <Button bsStyle="info" onClick={() => { this.props.handleAddType() }}>
                       Thêm loại từ
                     </Button>
                   </div>
@@ -170,7 +170,7 @@ export default class InsertModal extends React.Component {
             </Grid>
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="primary" onClick={this.props.handleInsertModalSave}>Lưu vào từ điển</Button>
+            <Button bsStyle="primary" onClick={this.props.handleSave}>Lưu vào từ điển</Button>
           </Modal.Footer>
         </Modal>
       </div>

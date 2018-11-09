@@ -73,20 +73,22 @@ export default class App extends React.Component {
     this.handleInsertModalShow = this.handleInsertModalShow.bind(this);
     this.handleInsertModalHide = this.handleInsertModalHide.bind(this);
 
-    this.handleInsertModalWordInEnglishChange = this.handleInsertModalWordInEnglishChange.bind(this);
-    this.handleInsertModalWordPronunciationChange = this.handleInsertModalWordPronunciationChange.bind(this);
-    this.handleInsertModalWordTypeChange = this.handleInsertModalWordTypeChange.bind(this);
-    this.handleInsertModalWordMeaningChange = this.handleInsertModalWordMeaningChange.bind(this);
-    this.handleInsertModalWordExampleInEnglishChange = this.handleInsertModalWordExampleInEnglishChange.bind(this);
-    this.handleInsertModalWordExampleInVietnameseChange = this.handleInsertModalWordExampleInVietnameseChange.bind(this);
+    this.handleWordInEnglishChange = this.handleWordInEnglishChange.bind(this);
+    this.handleWordPronunciationChange = this.handleWordPronunciationChange.bind(this);
+    this.handleWordTypeChange = this.handleWordTypeChange.bind(this);
+    this.handleWordMeaningChange = this.handleWordMeaningChange.bind(this);
+    this.handleWordExampleInEnglishChange = this.handleWordExampleInEnglishChange.bind(this);
+    this.handleWordExampleInVietnameseChange = this.handleWordExampleInVietnameseChange.bind(this);
 
-    this.handleInsertModalAddExample = this.handleInsertModalAddExample.bind(this);
-    this.handleInsertModalRemoveExample = this.handleInsertModalRemoveExample.bind(this);
-    this.handleInsertModalAddMeaning = this.handleInsertModalAddMeaning.bind(this);
-    this.handleInsertModalRemoveMeaning = this.handleInsertModalRemoveMeaning.bind(this);
-    this.handleInsertModalAddType = this.handleInsertModalAddType.bind(this);
-    this.handleInsertModalRemoveType = this.handleInsertModalRemoveType.bind(this);
-    this.handleInsertModalSave = this.handleInsertModalSave.bind(this);
+    this.handleAddExample = this.handleAddExample.bind(this);
+    this.handleRemoveExample = this.handleRemoveExample.bind(this);
+    this.handleAddMeaning = this.handleAddMeaning.bind(this);
+    this.handleRemoveMeaning = this.handleRemoveMeaning.bind(this);
+    this.handleAddType = this.handleAddType.bind(this);
+    this.handleRemoveType = this.handleRemoveType.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleEditModalShow = this.handleEditModalShow.bind(this);
+    this.handleEditModalHide = this.handleEditModalHide.bind(this);
   }
 
   componentDidMount() {
@@ -112,19 +114,48 @@ export default class App extends React.Component {
       Pronunciation: "",
       Content: ""
     };
+    let state = this.state;
+    state.currentWord = empty;
+
     if (Number(id) !== NaN && Number(id) > 0) {
-      let result = this.state.data.filter((currentWordValue, currentWordIndex, wordArray) => {
-        return currentWordValue.ID === Number(id);
+      let result = this.state.data.filter((wordValue, wordIndex, wordArray) => {
+        return wordValue.ID === Number(id);
       });
       let word = result.length ? result[0] : empty;
-      this.setState({
-        currentWord: word
+      state.currentWord = word;
+      state.editModal.show = false;
+
+      state.editModal.data.id = word.ID;
+      
+      state.editModal.data.inEnglish = { value: word.InEnglish, message: "" };
+
+      state.editModal.data.pronunciation = { value: word.Pronunciation, message: "" };
+
+      state.editModal.data.content = eval(JSON.parse(word.Content));
+
+      state.editModal.data.content.forEach((typeValue, typeIndex, typeArray) => {
+
+        typeArray[typeIndex].type = { value: typeValue.type, message: "" };
+        
+        typeValue.meaningsAndExamples.forEach((meaningValue, meaningIndex, meaningArray) => {
+          typeArray[typeIndex]
+            .meaningsAndExamples[meaningIndex]
+            .meaning = { value: meaningValue.meaning, message: "" };
+
+          meaningValue.examples.forEach((exampleValue, exampleIndex, exampleArray) => {
+            typeArray[typeIndex]
+              .meaningsAndExamples[meaningIndex]
+              .examples[exampleIndex]
+              = {
+                inEnglish: { value: exampleValue.inEnglish, message: "" },
+                inVietnamese: { value: exampleValue.inVietnamese, message: "" }
+              };
+          });
+        });
       });
-    } else {
-      this.setState({
-        currentWord: empty
-      });
+
     }
+    this.setState(state);
   }
 
   handleSearchBoxChange(event) {
@@ -191,36 +222,40 @@ export default class App extends React.Component {
     });
   }
 
-  handleInsertModalWordInEnglishChange(event) {
+  handleWordInEnglishChange(event, isedit = false) {
     let state = this.state;
+    let modalType = isedit ? "editModal" : "insertModal";
     let value = event.target.value;
-    state.insertModal.data.inEnglish.value = value;
-    Validate.wordInEnglish(state.insertModal.data.inEnglish);
+    state[modalType].data.inEnglish.value = value;
+    Validate.wordInEnglish(state[modalType].data.inEnglish);
     this.setState(state);
   }
 
-  handleInsertModalWordPronunciationChange(event) {
+  handleWordPronunciationChange(event, isedit = false) {
     let state = this.state;
+    let modalType = isedit ? "editModal" : "insertModal";
     let value = event.target.value;
-    state.insertModal.data.pronunciation.value = value;
-    Validate.wordPronunciation(state.insertModal.data.pronunciation);
+    state[modalType].data.pronunciation.value = value;
+    Validate.wordPronunciation(state[modalType].data.pronunciation);
     this.setState(state);
   }
 
-  handleInsertModalWordTypeChange(contentIndex, event) {
+  handleWordTypeChange(contentIndex, event, isedit = false) {
     let state = this.state;
+    let modalType = isedit ? "editModal" : "insertModal";
     let value = event.target.value;
-    state.insertModal.data
+    state[modalType].data
       .content[contentIndex].type.value = value;
-    Validate.wordType(state.insertModal.data.content[contentIndex].type);
+    Validate.wordType(state[modalType].data.content[contentIndex].type);
     this.setState(state);
   }
 
-  handleInsertModalWordMeaningChange(contentIndex, meaningAndExampleIndex, event) {
+  handleWordMeaningChange(contentIndex, meaningAndExampleIndex, event, isedit = false) {
     let state = this.state;
+    let modalType = isedit ? "editModal" : "insertModal";
     let value = event.target.value;
 
-    let meaning = state.insertModal.data
+    let meaning = state[modalType].data
       .content[contentIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
       .meaning;
@@ -229,7 +264,7 @@ export default class App extends React.Component {
 
     Validate.wordMeaning(meaning);
 
-    state.insertModal.data
+    state[modalType].data
       .content[contentIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
       .meaning = meaning;
@@ -237,11 +272,12 @@ export default class App extends React.Component {
     this.setState(state);
   }
 
-  handleInsertModalWordExampleInEnglishChange(contentIndex, meaningAndExampleIndex, exampleIndex, event) {
+  handleWordExampleInEnglishChange(contentIndex, meaningAndExampleIndex, exampleIndex, event, isedit = false) {
     let state = this.state;
+    let modalType = isedit ? "editModal" : "insertModal";
     let value = event.target.value;
 
-    let inEnglish = state.insertModal.data
+    let inEnglish = state[modalType].data
       .content[contentIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
       .examples[exampleIndex]
@@ -250,20 +286,20 @@ export default class App extends React.Component {
 
     Validate.wordExampleInEnglish(inEnglish);
 
-    state.insertModal.data
+    state[modalType].data
       .content[contentIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
       .examples[exampleIndex]
       .inEnglish = inEnglish;
     this.setState(state);
-
   }
 
-  handleInsertModalWordExampleInVietnameseChange(contentIndex, meaningAndExampleIndex, exampleIndex, event) {
+  handleWordExampleInVietnameseChange(contentIndex, meaningAndExampleIndex, exampleIndex, event, isedit = false) {
     let state = this.state;
     let value = event.target.value;
+    let modalType = isedit ? "editModal" : "insertModal";
 
-    let inVietnamese = state.insertModal.data
+    let inVietnamese = state[modalType].data
       .content[contentIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
       .examples[exampleIndex]
@@ -272,7 +308,7 @@ export default class App extends React.Component {
 
     Validate.wordExampleInVietnamese(inVietnamese);
 
-    state.insertModal.data
+    state[modalType].data
       .content[contentIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
       .examples[exampleIndex]
@@ -280,9 +316,10 @@ export default class App extends React.Component {
     this.setState(state);
   }
 
-  handleInsertModalAddType() {
+  handleAddType(isedit = false) {
     let state = this.state;
-    state.insertModal.data
+    let modalType = isedit ? "editModal" : "insertModal";
+    state[modalType].data
       .content
       .push({
         type: { value: "", message: "" },
@@ -301,17 +338,19 @@ export default class App extends React.Component {
     this.setState(state);
   }
 
-  handleInsertModalRemoveType(typeIndex) {
+  handleRemoveType(typeIndex, isedit = false) {
     let state = this.state;
-    if (state.insertModal.data.content.length > 1) {
-      state.insertModal.data.content.splice(typeIndex, 1);
+    let modalType = isedit ? "editModal" : "insertModal";
+    if (state[modalType].data.content.length > 1) {
+      state[modalType].data.content.splice(typeIndex, 1);
       this.setState(state);
     }
   }
 
-  handleInsertModalAddMeaning(typeIndex) {
+  handleAddMeaning(typeIndex, isedit = false) {
     let state = this.state;
-    state.insertModal.data
+    let modalType = isedit ? "editModal" : "insertModal";
+    state[modalType].data
       .content[typeIndex]
       .meaningsAndExamples
       .push({
@@ -326,17 +365,19 @@ export default class App extends React.Component {
     this.setState(state);
   }
 
-  handleInsertModalRemoveMeaning(typeIndex, meaningAndExampleIndex) {
+  handleRemoveMeaning(typeIndex, meaningAndExampleIndex, isedit = false) {
     let state = this.state;
-    if (state.insertModal.data.content[typeIndex].meaningsAndExamples.length > 1) {
-      state.insertModal.data.content[typeIndex].meaningsAndExamples.splice(meaningAndExampleIndex, 1);
+    let modalType = isedit ? "editModal" : "insertModal";
+    if (state[modalType].data.content[typeIndex].meaningsAndExamples.length > 1) {
+      state[modalType].data.content[typeIndex].meaningsAndExamples.splice(meaningAndExampleIndex, 1);
       this.setState(state);
     }
   }
 
-  handleInsertModalAddExample(typeIndex, meaningAndExampleIndex) {
+  handleAddExample(typeIndex, meaningAndExampleIndex, isedit = false) {
     let state = this.state;
-    state.insertModal.data
+    let modalType = isedit ? "editModal" : "insertModal";
+    state[modalType].data
       .content[typeIndex]
       .meaningsAndExamples[meaningAndExampleIndex]
       .examples
@@ -347,10 +388,11 @@ export default class App extends React.Component {
     this.setState(state);
   }
 
-  handleInsertModalRemoveExample(typeIndex, meaningAndExampleIndex, exampleIndex) {
-    if (this.state.insertModal.data.content[typeIndex].meaningsAndExamples[meaningAndExampleIndex].examples.length > 1) {
+  handleRemoveExample(typeIndex, meaningAndExampleIndex, exampleIndex, isedit = false) {
+    let modalType = isedit ? "editModal" : "insertModal";
+    if (this.state[modalType].data.content[typeIndex].meaningsAndExamples[meaningAndExampleIndex].examples.length > 1) {
       let state = this.state;
-      state.insertModal.data
+      state[modalType].data
         .content[typeIndex]
         .meaningsAndExamples[meaningAndExampleIndex]
         .examples
@@ -359,7 +401,7 @@ export default class App extends React.Component {
     }
   }
 
-  handleInsertModalSave() {
+  handleSave() {
     let insertModalState = this.state.insertModal;
     Validate.insertWord(insertModalState);
     let isValid = Validate.insertWord(insertModalState);
@@ -429,6 +471,28 @@ export default class App extends React.Component {
     );
   }
 
+/* --------------------------------------------------------------- */
+
+  handleEditModalShow() {
+    this.setState({
+      editModal: {
+        show: true,
+        data: this.state.editModal.data
+      }
+    });
+  }
+
+  handleEditModalHide() {
+    this.setState({
+      editModal: {
+        show: false,
+        data: this.state.editModal.data
+      }
+    });
+  }
+
+/* =-------------------------------------------------------------- */
+
   render() {
     return (
       <div>
@@ -440,28 +504,35 @@ export default class App extends React.Component {
           setCurrentWord={this.setCurrentWord}
           handleInsertModalShow={this.handleInsertModalShow}
           handleInsertModalHide={this.handleInsertModalHide}
+          handleEditModalShow={this.handleEditModalShow}
+          handleEditModalHide={this.handleEditModalHide}
         />
         <InsertModal
           data={this.state.data}
           insertModal={this.state.insertModal}
           handleInsertModalShow={this.handleInsertModalShow}
           handleInsertModalHide={this.handleInsertModalHide}
-          handleInsertModalWordInEnglishChange={this.handleInsertModalWordInEnglishChange}
-          handleInsertModalWordPronunciationChange={this.handleInsertModalWordPronunciationChange}
-          handleInsertModalWordTypeChange={this.handleInsertModalWordTypeChange}
-          handleInsertModalWordMeaningChange={this.handleInsertModalWordMeaningChange}
-          handleInsertModalWordExampleInEnglishChange={this.handleInsertModalWordExampleInEnglishChange}
-          handleInsertModalWordExampleInVietnameseChange={this.handleInsertModalWordExampleInVietnameseChange}
-          handleInsertModalAddExample={this.handleInsertModalAddExample}
-          handleInsertModalRemoveExample={this.handleInsertModalRemoveExample}
-          handleInsertModalAddMeaning={this.handleInsertModalAddMeaning}
-          handleInsertModalRemoveMeaning={this.handleInsertModalRemoveMeaning}
-          handleInsertModalAddType={this.handleInsertModalAddType}
-          handleInsertModalRemoveType={this.handleInsertModalRemoveType}
-          handleInsertModalSave={this.handleInsertModalSave}
+          handleWordInEnglishChange={this.handleWordInEnglishChange}
+          handleWordPronunciationChange={this.handleWordPronunciationChange}
+          handleWordTypeChange={this.handleWordTypeChange}
+          handleWordMeaningChange={this.handleWordMeaningChange}
+          handleWordExampleInEnglishChange={this.handleWordExampleInEnglishChange}
+          handleWordExampleInVietnameseChange={this.handleWordExampleInVietnameseChange}
+          handleAddExample={this.handleAddExample}
+          handleRemoveExample={this.handleRemoveExample}
+          handleAddMeaning={this.handleAddMeaning}
+          handleRemoveMeaning={this.handleRemoveMeaning}
+          handleAddType={this.handleAddType}
+          handleRemoveType={this.handleRemoveType}
+          handleSave={this.handleSave}
         />
         <EditModal
           data={this.state.data}
+          editModal={this.state.editModal}
+          handleEditModalShow={this.handleEditModalShow}
+          handleEditModalHide={this.handleEditModalHide}
+          handleWordInEnglishChange={this.handleWordInEnglishChange}
+          handleWordPronunciationChange={this.handleWordPronunciationChange}
         />
       </div>
     );

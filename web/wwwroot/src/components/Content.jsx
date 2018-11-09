@@ -1,4 +1,5 @@
 import React from "react";
+import { DropdownButton, MenuItem } from "react-bootstrap";
 
 export default class Content extends React.Component {
   constructor(props) {
@@ -20,7 +21,27 @@ export default class Content extends React.Component {
 
       return (
         <div className="word">
-          <div className="word-in-english">{_this.props.currentWord.InEnglish}</div>
+          <div className="word-in-english">
+            {_this.props.currentWord.InEnglish}&nbsp;&nbsp;
+            <DropdownButton
+              title=""
+              id="tasks"
+              bsStyle="default"
+              bsSize="small"
+              noCaret={false}
+            >
+              <MenuItem eventKey={1} onClick={this.props.handleEditModalShow}>
+                <i className="fa fa-pencil-square-o text-warning"></i>&nbsp;Sửa
+              </MenuItem> 
+              <MenuItem eventKey={2} onClick={() => { this.props.setCurrentWord(0); }}>
+                <i className="fa fa-times"></i>&nbsp;Đóng
+              </MenuItem>
+              <MenuItem divider={true}></MenuItem>
+              <MenuItem eventKey={3}>
+                <i className="fa fa-ban text-danger"></i>&nbsp;Xóa
+              </MenuItem>
+            </DropdownButton>
+          </div>
           <div className="word-pronunciation">
             <div>{_this.props.currentWord.Pronunciation}</div>
             <div>
