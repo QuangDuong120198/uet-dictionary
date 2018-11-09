@@ -371,71 +371,48 @@ export default class App extends React.Component {
             ID: 0,
             InEnglish: "",
             Pronunciation: "",
-            Content: ""
+            Content: []
           };
-          jsonObject.InEnglish = this.state.insertModal.data.inEnglish.value;
-          jsonObject.Pronunciation = this.state.insertModal.data.pronunciation.value.replace(/\'/g, "''");
 
-          delete jsonObject.InEnglish.value;
-          delete jsonObject.InEnglish.message;
-          delete jsonObject.Pronunciation.value;
-          delete jsonObject.Pronunciation.message;
+          let insertModalData = this.state.insertModal.data;
 
-          let insertModalContentWithoutMessage = this.state.insertModal.data.content;
-          insertModalContentWithoutMessage.forEach((currentTypeValue, currentTypeIndex, typeArray) => {
-
-            typeArray[currentTypeIndex].type = currentTypeValue.type.value.replace(/\'/g, "''");
-            delete typeArray[currentTypeIndex].type.value;
-            delete typeArray[currentTypeIndex].type.message;
-
-            currentTypeValue.meaningsAndExamples.forEach((currentMeaningValue, currentMeaningIndex) => {
-
-              typeArray[currentMeaningIndex]
-                .meaningsAndExamples[currentMeaningIndex]
-                .meaning = currentMeaningValue.meaning.value.replace(/\'/g, "''");
-              delete typeArray[currentMeaningIndex].meaningsAndExamples[currentMeaningIndex].meaning.value;
-              delete typeArray[currentMeaningIndex].meaningsAndExamples[currentMeaningIndex].meaning.message;
-
-              currentMeaningValue.examples.forEach((currentExampleValue, currentExampleIndex) => {
-
-                typeArray[currentMeaningIndex]
-                  .meaningsAndExamples[currentMeaningIndex]
-                  .examples[currentExampleIndex]
-                  .inEnglish = currentExampleValue.inEnglish.value.replace(/\'/g, "''");
-
-                typeArray[currentMeaningIndex]
-                  .meaningsAndExamples[currentMeaningIndex]
-                  .examples[currentExampleIndex]
-                  .inVietnamese = currentExampleValue.inVietnamese.value.replace(/\'/g, "''");
-
-                delete typeArray[currentMeaningIndex]
-                  .meaningsAndExamples[currentMeaningIndex]
-                  .examples[currentExampleIndex]
-                  .inEnglish.value;
-                delete typeArray[currentMeaningIndex]
-                  .meaningsAndExamples[currentMeaningIndex]
-                  .examples[currentExampleIndex]
-                  .inEnglish.message;
-                delete typeArray[currentMeaningIndex]
-                  .meaningsAndExamples[currentMeaningIndex]
-                  .examples[currentExampleIndex]
-                  .inVietnamese.value;
-                delete typeArray[currentMeaningIndex]
-                  .meaningsAndExamples[currentMeaningIndex]
-                  .examples[currentExampleIndex]
-                  .inVietnamese.message;
-              });
+          jsonObject.InEnglish = insertModalData.inEnglish.value;
+          jsonObject.Pronunciation = insertModalData.pronunciation.value.replace(/\'/g, "''");
+          
+          insertModalData.content.forEach((typeValue, typeIndex, typeArray) => {
+            jsonObject.Content.push({
+              type: typeValue.type.value.replace(/\'/g, "''"),
+              meaningsAndExamples: []
+            });
+            typeValue.meaningsAndExamples.forEach((meaningValue, meaningIndex, meaningArray) => {
+              jsonObject
+                .Content[typeIndex]
+                .meaningsAndExamples
+                .push({
+                  meaning: meaningValue.meaning.value.replace(/\'/g, "''"),
+                  examples: []
+                });
+              meaningValue.examples.forEach((exampleValue, exampleIndex, exampleArray) => {
+                jsonObject
+                  .Content[typeIndex]
+                  .meaningsAndExamples[meaningIndex]
+                  .examples
+                  .push({
+                    inEnglish: exampleValue.inEnglish.value.replace(/\'/g, "''"),
+                    inVietnamese: exampleValue.inVietnamese.value.replace(/\'/g, "''")
+                  });
+                });
             });
           });
-
-          jsonObject.Content = JSON.stringify(insertModalContentWithoutMessage);
+          
+          jsonObject.Content = JSON.stringify(jsonObject.Content);
 
           axios.post("/home/inserttodictionary", jsonObject)
             .then(() => {
               this.handleInsertModalHide();
               Snackbar.show({
                 text: "Đã thêm vào từ điển",
-                duration: 5000,
+                duration: 3000,
                 pos: "bottom-center",
                 showAction: false
               });
