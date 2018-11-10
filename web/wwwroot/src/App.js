@@ -72,6 +72,8 @@ export default class App extends React.Component {
 
     this.handleInsertModalShow = this.handleInsertModalShow.bind(this);
     this.handleInsertModalHide = this.handleInsertModalHide.bind(this);
+    this.handleEditModalShow = this.handleEditModalShow.bind(this);
+    this.handleEditModalHide = this.handleEditModalHide.bind(this);
 
     this.handleWordInEnglishChange = this.handleWordInEnglishChange.bind(this);
     this.handleWordPronunciationChange = this.handleWordPronunciationChange.bind(this);
@@ -86,9 +88,8 @@ export default class App extends React.Component {
     this.handleRemoveMeaning = this.handleRemoveMeaning.bind(this);
     this.handleAddType = this.handleAddType.bind(this);
     this.handleRemoveType = this.handleRemoveType.bind(this);
-    this.handleSave = this.handleSave.bind(this);
-    this.handleEditModalShow = this.handleEditModalShow.bind(this);
-    this.handleEditModalHide = this.handleEditModalHide.bind(this);
+    this.handleInsert = this.handleInsert.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
   }
 
   componentDidMount() {
@@ -104,10 +105,13 @@ export default class App extends React.Component {
       })
       .catch((err) => {
         console.warn(err.message);
+      })
+      .then(()=>{
+        this.setCurrentWord(this.state.currentWord.ID);
       });
   }
 
-  setCurrentWord(id = 0) {
+  setCurrentWord(id = 0, openEditModal = false) {
     let empty = {
       ID: 0,
       InEnglish: "",
@@ -153,8 +157,9 @@ export default class App extends React.Component {
           });
         });
       });
-
     }
+    state.editModal.show = openEditModal;
+
     this.setState(state);
   }
 
@@ -220,6 +225,14 @@ export default class App extends React.Component {
         }
       }
     });
+  }
+
+  handleEditModalShow() {
+    this.setCurrentWord(this.state.currentWord.ID, true);
+  }
+
+  handleEditModalHide() {
+    this.setCurrentWord(this.state.currentWord.ID, false);
   }
 
   handleWordInEnglishChange(event, isedit = false) {
@@ -401,10 +414,10 @@ export default class App extends React.Component {
     }
   }
 
-  handleSave() {
+  handleInsert() {
     let insertModalState = this.state.insertModal;
-    Validate.insertWord(insertModalState);
-    let isValid = Validate.insertWord(insertModalState);
+    Validate.all(insertModalState);
+    let isValid = Validate.all(insertModalState);
     this.setState(
       { insertModal: insertModalState },
       () => {
@@ -471,27 +484,76 @@ export default class App extends React.Component {
     );
   }
 
-/* --------------------------------------------------------------- */
+  handleEdit() {
+    let editModalState = this.state.editModal;
+    Validate.all(editModalState);
+    let isValid = Validate.all(editModalState);
+    this.setState(
+      { editModal: editModalState },
+      () => {
+        if (isValid) {
+          let jsonObject = {
+            ID: 0,
+            InEnglish: "",
+            Pronunciation: "",
+            Content: []
+          };
 
-  handleEditModalShow() {
-    this.setState({
-      editModal: {
-        show: true,
-        data: this.state.editModal.data
+          let editModalData = this.state.editModal.data;
+
+          jsonObject.ID = editModalData.id;
+          jsonObject.InEnglish = editModalData.inEnglish.value;
+          jsonObject.Pronunciation = editModalData.pronunciation.value.replace(/\'/g, "''");
+          
+          editModalData.content.forEach((typeValue, typeIndex, typeArray) => {
+            jsonObject.Content.push({
+              type: typeValue.type.value.replace(/\'/g, "''"),
+              meaningsAndExamples: []
+            });
+            typeValue.meaningsAndExamples.forEach((meaningValue, meaningIndex, meaningArray) => {
+              jsonObject
+                .Content[typeIndex]
+                .meaningsAndExamples
+                .push({
+                  meaning: meaningValue.meaning.value.replace(/\'/g, "''"),
+                  examples: []
+                });
+              meaningValue.examples.forEach((exampleValue, exampleIndex, exampleArray) => {
+                jsonObject
+                  .Content[typeIndex]
+                  .meaningsAndExamples[meaningIndex]
+                  .examples
+                  .push({
+                    inEnglish: exampleValue.inEnglish.value.replace(/\'/g, "''"),
+                    inVietnamese: exampleValue.inVietnamese.value.replace(/\'/g, "''")
+                  });
+                });
+            });
+          });
+          
+          jsonObject.Content = JSON.stringify(jsonObject.Content);
+
+          axios.post("/home/editdictionary", jsonObject)
+            .then(()=>{
+              this.handleEditModalHide();
+            })
+            .catch((err)=>{
+              console.warn(err.message);
+            })
+            .then(()=>{
+              this.handleEditModalHide();
+              this.updateDictionary();
+              Snackbar.show({
+                text: "Đã sửa",
+                duration: 3000,
+                pos: "bottom-center",
+                showAction: false
+              });
+            });
+        }
       }
-    });
+    );
   }
-
-  handleEditModalHide() {
-    this.setState({
-      editModal: {
-        show: false,
-        data: this.state.editModal.data
-      }
-    });
-  }
-
-/* =-------------------------------------------------------------- */
 
   render() {
     return (
@@ -524,7 +586,7 @@ export default class App extends React.Component {
           handleRemoveMeaning={this.handleRemoveMeaning}
           handleAddType={this.handleAddType}
           handleRemoveType={this.handleRemoveType}
-          handleSave={this.handleSave}
+          handleInsert={this.handleInsert}
         />
         <EditModal
           data={this.state.data}
@@ -533,6 +595,17 @@ export default class App extends React.Component {
           handleEditModalHide={this.handleEditModalHide}
           handleWordInEnglishChange={this.handleWordInEnglishChange}
           handleWordPronunciationChange={this.handleWordPronunciationChange}
+          handleWordTypeChange={this.handleWordTypeChange}
+          handleWordMeaningChange={this.handleWordMeaningChange}
+          handleWordExampleInEnglishChange={this.handleWordExampleInEnglishChange}
+          handleWordExampleInVietnameseChange={this.handleWordExampleInVietnameseChange}
+          handleAddExample={this.handleAddExample}
+          handleRemoveExample={this.handleRemoveExample}
+          handleAddMeaning={this.handleAddMeaning}
+          handleRemoveMeaning={this.handleRemoveMeaning}
+          handleAddType={this.handleAddType}
+          handleRemoveType={this.handleRemoveType}
+          handleEdit={this.handleEdit}
         />
       </div>
     );

@@ -14,7 +14,6 @@ namespace UetDictionaryWeb.Controllers
   public class HomeController : Controller
   {
     protected DictionaryContext db;
-
     public HomeController()
     {
       db = new DictionaryContext();
@@ -27,7 +26,6 @@ namespace UetDictionaryWeb.Controllers
     {
       return new JsonResult(db.Words);
     }
-
     public int InsertToDictionary()
     {
       using(StreamReader reader = new StreamReader(Request.Body))
@@ -40,6 +38,25 @@ namespace UetDictionaryWeb.Controllers
         db.Words.Add(item);
 
         return db.SaveChanges();
+      }
+    }
+    public int EditDictionary()
+    {
+      using(StreamReader reader = new StreamReader(Request.Body))
+      {
+        string jsonString = reader.ReadToEnd();
+
+        Word jsonObject = JsonConvert.DeserializeObject<Word>(jsonString);
+
+        Word item = db.Words.Where(word => word.ID == jsonObject.ID).FirstOrDefault();
+        if (item != null) {
+          item.InEnglish = jsonObject.InEnglish;
+          item.Pronunciation = jsonObject.Pronunciation;
+          item.Content = jsonObject.Content;
+          return db.SaveChanges();
+        } else {
+          return 0;
+        }
       }
     }
 

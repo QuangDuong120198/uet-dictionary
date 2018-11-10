@@ -100,7 +100,7 @@ export default class InsertModal extends React.Component {
                                                     <button
                                                       type="button" className="close"
                                                       onClick={() => {
-                                                        this.props.handleRemoveExample(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex)
+                                                        this.props.handleRemoveExample(currentTypeIndex, currentMeaningAndExampleIndex, currentExampleIndex);
                                                       }}
                                                     >
                                                       &times;
@@ -161,7 +161,7 @@ export default class InsertModal extends React.Component {
               <Row className="show-grid">
                 <Col xs={12}>
                   <div className="text-center">
-                    <Button bsStyle="info" onClick={() => { this.props.handleAddType() }}>
+                    <Button bsStyle="info" onClick={() => { this.props.handleAddType(); }}>
                       Thêm loại từ
                     </Button>
                   </div>
@@ -170,7 +170,7 @@ export default class InsertModal extends React.Component {
             </Grid>
           </Modal.Body>
           <Modal.Footer>
-            <Button bsStyle="primary" onClick={this.props.handleSave}>Lưu vào từ điển</Button>
+            <Button bsStyle="primary" onClick={this.props.handleInsert}>Lưu vào từ điển</Button>
           </Modal.Footer>
         </Modal>
       </div>

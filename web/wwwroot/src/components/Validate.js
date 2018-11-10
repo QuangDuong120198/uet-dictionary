@@ -96,7 +96,7 @@ module.exports = {
     }
   },
 
-  insertWord: function(insertModalState) {
+  all: function(modalDataState) {
     // insertModal: {
     //   show: true,
     //   data: {
@@ -123,13 +123,13 @@ module.exports = {
     // }
     let isValid = true;
 
-    this.wordExampleInEnglish(insertModalState.data.inEnglish);
-    this.wordPronunciation(insertModalState.data.pronunciation);
+    this.wordExampleInEnglish(modalDataState.data.inEnglish);
+    this.wordPronunciation(modalDataState.data.pronunciation);
 
-    isValid = isValid && this.wordExampleInEnglish(insertModalState.data.inEnglish);
-    isValid = isValid && this.wordPronunciation(insertModalState.data.pronunciation);
+    isValid = isValid && this.wordExampleInEnglish(modalDataState.data.inEnglish);
+    isValid = isValid && this.wordPronunciation(modalDataState.data.pronunciation);
 
-    insertModalState.data.content.forEach((currentTypeValue) => {
+    modalDataState.data.content.forEach((currentTypeValue) => {
 
       this.wordType(currentTypeValue.type);
       isValid = isValid && this.wordType(currentTypeValue.type);
@@ -145,11 +145,8 @@ module.exports = {
           this.wordExampleInVietnamese(currentExampleValue.inVietnamese);
           isValid = isValid && this.wordExampleInEnglish(currentExampleValue.inEnglish);
           isValid = isValid && this.wordExampleInVietnamese(currentExampleValue.inVietnamese);
-
         });
-      
       });
-
     });
     return isValid;
   }
