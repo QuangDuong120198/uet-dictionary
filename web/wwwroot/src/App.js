@@ -88,8 +88,10 @@ export default class App extends React.Component {
     this.handleRemoveMeaning = this.handleRemoveMeaning.bind(this);
     this.handleAddType = this.handleAddType.bind(this);
     this.handleRemoveType = this.handleRemoveType.bind(this);
+
     this.handleInsert = this.handleInsert.bind(this);
     this.handleEdit = this.handleEdit.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
 
   componentDidMount() {
@@ -106,7 +108,7 @@ export default class App extends React.Component {
       .catch((err) => {
         console.warn(err.message);
       })
-      .then(()=>{
+      .then(() => {
         this.setCurrentWord(this.state.currentWord.ID);
       });
   }
@@ -130,7 +132,7 @@ export default class App extends React.Component {
       state.editModal.show = false;
 
       state.editModal.data.id = word.ID;
-      
+
       state.editModal.data.inEnglish = { value: word.InEnglish, message: "" };
 
       state.editModal.data.pronunciation = { value: word.Pronunciation, message: "" };
@@ -140,7 +142,7 @@ export default class App extends React.Component {
       state.editModal.data.content.forEach((typeValue, typeIndex, typeArray) => {
 
         typeArray[typeIndex].type = { value: typeValue.type, message: "" };
-        
+
         typeValue.meaningsAndExamples.forEach((meaningValue, meaningIndex, meaningArray) => {
           typeArray[typeIndex]
             .meaningsAndExamples[meaningIndex]
@@ -433,7 +435,7 @@ export default class App extends React.Component {
 
           jsonObject.InEnglish = insertModalData.inEnglish.value;
           jsonObject.Pronunciation = insertModalData.pronunciation.value.replace(/\'/g, "''");
-          
+
           insertModalData.content.forEach((typeValue, typeIndex, typeArray) => {
             jsonObject.Content.push({
               type: typeValue.type.value.replace(/\'/g, "''"),
@@ -456,13 +458,13 @@ export default class App extends React.Component {
                     inEnglish: exampleValue.inEnglish.value.replace(/\'/g, "''"),
                     inVietnamese: exampleValue.inVietnamese.value.replace(/\'/g, "''")
                   });
-                });
+              });
             });
           });
-          
+
           jsonObject.Content = JSON.stringify(jsonObject.Content);
 
-          axios.post("/home/inserttodictionary", jsonObject)
+          axios.post("/home/insertword", jsonObject)
             .then(() => {
               this.handleInsertModalHide();
               Snackbar.show({
@@ -504,7 +506,7 @@ export default class App extends React.Component {
           jsonObject.ID = editModalData.id;
           jsonObject.InEnglish = editModalData.inEnglish.value;
           jsonObject.Pronunciation = editModalData.pronunciation.value.replace(/\'/g, "''");
-          
+
           editModalData.content.forEach((typeValue, typeIndex, typeArray) => {
             jsonObject.Content.push({
               type: typeValue.type.value.replace(/\'/g, "''"),
@@ -527,20 +529,20 @@ export default class App extends React.Component {
                     inEnglish: exampleValue.inEnglish.value.replace(/\'/g, "''"),
                     inVietnamese: exampleValue.inVietnamese.value.replace(/\'/g, "''")
                   });
-                });
+              });
             });
           });
-          
+
           jsonObject.Content = JSON.stringify(jsonObject.Content);
 
-          axios.post("/home/editdictionary", jsonObject)
-            .then(()=>{
+          axios.post("/home/editword", jsonObject)
+            .then(() => {
               this.handleEditModalHide();
             })
-            .catch((err)=>{
+            .catch((err) => {
               console.warn(err.message);
             })
-            .then(()=>{
+            .then(() => {
               this.handleEditModalHide();
               this.updateDictionary();
               Snackbar.show({
@@ -553,6 +555,24 @@ export default class App extends React.Component {
         }
       }
     );
+  }
+
+  handleRemove() {
+    if (confirm("Bạn có chắc muốn xóa từ này khỏi từ điển?")) {
+      let id = this.state.currentWord.ID ? Math.abs(this.state.currentWord.ID) : 0;
+      axios.delete("home/removeword", { data: id })
+        .then((response) => {
+          if (response.data > 0) {
+            this.setCurrentWord(0);
+          }
+        })
+        .catch((err) => {
+          console.warn(err.message);
+        })
+        .then(() => {
+          this.updateDictionary();
+        });
+    }
   }
 
   render() {
@@ -568,6 +588,7 @@ export default class App extends React.Component {
           handleInsertModalHide={this.handleInsertModalHide}
           handleEditModalShow={this.handleEditModalShow}
           handleEditModalHide={this.handleEditModalHide}
+          handleRemove={this.handleRemove}
         />
         <InsertModal
           data={this.state.data}

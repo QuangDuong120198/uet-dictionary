@@ -26,7 +26,7 @@ namespace UetDictionaryWeb.Controllers
     {
       return new JsonResult(db.Words);
     }
-    public int InsertToDictionary()
+    public int InsertWord()
     {
       using(StreamReader reader = new StreamReader(Request.Body))
       {
@@ -40,7 +40,7 @@ namespace UetDictionaryWeb.Controllers
         return db.SaveChanges();
       }
     }
-    public int EditDictionary()
+    public int EditWord()
     {
       using(StreamReader reader = new StreamReader(Request.Body))
       {
@@ -57,6 +57,18 @@ namespace UetDictionaryWeb.Controllers
         } else {
           return 0;
         }
+      }
+    }
+
+    public int RemoveWord()
+    {
+      using(StreamReader reader = new StreamReader(Request.Body))
+      {
+        int id = int.Parse(reader.ReadToEnd());
+        Word itemWillBeRemoved = db.Words.Where(word => word.ID == id).FirstOrDefault();
+        db.Words.Remove(itemWillBeRemoved);
+        
+        return db.SaveChanges();
       }
     }
 

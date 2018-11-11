@@ -24,6 +24,7 @@ export default class Layout extends React.Component {
           handleInsertModalHide={this.props.handleInsertModalHide}
           handleEditModalShow={this.props.handleEditModalShow}
           handleEditModalHide={this.props.handleEditModalHide}
+          handleRemove={this.props.handleRemove}
         />
       </div>
     );

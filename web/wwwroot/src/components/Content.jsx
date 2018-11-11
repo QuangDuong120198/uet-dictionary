@@ -37,7 +37,7 @@ export default class Content extends React.Component {
                 <i className="fa fa-times"></i>&nbsp;Đóng
               </MenuItem>
               <MenuItem divider={true}></MenuItem>
-              <MenuItem eventKey={3}>
+              <MenuItem eventKey={3} onClick={() => { this.props.handleRemove(); }}>
                 <i className="fa fa-ban text-danger"></i>&nbsp;Xóa
               </MenuItem>
             </DropdownButton>
@@ -56,23 +56,23 @@ export default class Content extends React.Component {
           </div>
           <div className="word-content">
             {
-              content.map((currentContentValue, currentContentIndex, contentArray) => {
+              content.map((typeValue, typeIndex, typeArray) => {
                 return (
-                  <div key={currentContentIndex}>
-                    <strong>{currentContentValue.type}</strong>
+                  <div key={typeIndex}>
+                    <strong>{typeValue.type}</strong>
                     {
-                      currentContentValue.meaningsAndExamples
-                        .map((currentMeaningsAndExamplesValue, currentMeaningsAndExamplesIndex, meaningsAndExamplesArray) => {
+                      typeValue.meaningsAndExamples
+                        .map((meaningValue, meaningIndex, meaningArray) => {
                           return (
-                            <div className="word-meanings-and-examples" key={currentMeaningsAndExamplesIndex}>
-                              <div>{currentMeaningsAndExamplesValue.meaning}</div>
+                            <div className="word-meanings-and-examples" key={meaningIndex}>
+                              <div>{meaningValue.meaning}</div>
                               {
-                                currentMeaningsAndExamplesValue.examples
-                                  .map((currentExampleValue, currentExampleIndex, exampleArray) => {
+                                meaningValue.examples
+                                  .map((exampleValue, exampleIndex, exampleArray) => {
                                     return (
-                                      <div className="word-example" key={currentExampleIndex}>
-                                        <div>{currentExampleValue.inEnglish}</div>
-                                        <div>{currentExampleValue.inVietnamese}</div>
+                                      <div className="word-example" key={exampleIndex}>
+                                        <div>{exampleValue.inEnglish}</div>
+                                        <div>{exampleValue.inVietnamese}</div>
                                       </div>
                                     );
                                   })
