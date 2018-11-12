@@ -43,7 +43,7 @@ export default class Content extends React.Component {
             </DropdownButton>
           </div>
           <div className="word-pronunciation">
-            <div>{_this.props.currentWord.Pronunciation}</div>
+            <div>{`/${this.props.currentWord.Pronunciation}/`}</div>
             <div>
               <i
                 className="fa fa-2x fa-volume-up"

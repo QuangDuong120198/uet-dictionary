@@ -24,7 +24,7 @@ namespace UetDictionaryWeb.Controllers
     }
     public IActionResult GetDictionary()
     {
-      return new JsonResult(db.Words);
+      return new JsonResult(db.Words.OrderBy(word => word.InEnglish));
     }
     public int InsertWord()
     {

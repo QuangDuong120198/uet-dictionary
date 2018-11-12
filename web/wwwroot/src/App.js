@@ -434,11 +434,11 @@ export default class App extends React.Component {
           let insertModalData = this.state.insertModal.data;
 
           jsonObject.InEnglish = insertModalData.inEnglish.value;
-          jsonObject.Pronunciation = insertModalData.pronunciation.value.replace(/\'/g, "''");
+          jsonObject.Pronunciation = insertModalData.pronunciation.value;
 
           insertModalData.content.forEach((typeValue, typeIndex, typeArray) => {
             jsonObject.Content.push({
-              type: typeValue.type.value.replace(/\'/g, "''"),
+              type: typeValue.type.value,
               meaningsAndExamples: []
             });
             typeValue.meaningsAndExamples.forEach((meaningValue, meaningIndex, meaningArray) => {
@@ -446,7 +446,7 @@ export default class App extends React.Component {
                 .Content[typeIndex]
                 .meaningsAndExamples
                 .push({
-                  meaning: meaningValue.meaning.value.replace(/\'/g, "''"),
+                  meaning: meaningValue.meaning.value,
                   examples: []
                 });
               meaningValue.examples.forEach((exampleValue, exampleIndex, exampleArray) => {
@@ -455,8 +455,8 @@ export default class App extends React.Component {
                   .meaningsAndExamples[meaningIndex]
                   .examples
                   .push({
-                    inEnglish: exampleValue.inEnglish.value.replace(/\'/g, "''"),
-                    inVietnamese: exampleValue.inVietnamese.value.replace(/\'/g, "''")
+                    inEnglish: exampleValue.inEnglish.value,
+                    inVietnamese: exampleValue.inVietnamese.value
                   });
               });
             });
@@ -505,11 +505,11 @@ export default class App extends React.Component {
 
           jsonObject.ID = editModalData.id;
           jsonObject.InEnglish = editModalData.inEnglish.value;
-          jsonObject.Pronunciation = editModalData.pronunciation.value.replace(/\'/g, "''");
+          jsonObject.Pronunciation = editModalData.pronunciation.value;
 
           editModalData.content.forEach((typeValue, typeIndex, typeArray) => {
             jsonObject.Content.push({
-              type: typeValue.type.value.replace(/\'/g, "''"),
+              type: typeValue.type.value,
               meaningsAndExamples: []
             });
             typeValue.meaningsAndExamples.forEach((meaningValue, meaningIndex, meaningArray) => {
@@ -517,7 +517,7 @@ export default class App extends React.Component {
                 .Content[typeIndex]
                 .meaningsAndExamples
                 .push({
-                  meaning: meaningValue.meaning.value.replace(/\'/g, "''"),
+                  meaning: meaningValue.meaning.value,
                   examples: []
                 });
               meaningValue.examples.forEach((exampleValue, exampleIndex, exampleArray) => {
@@ -526,8 +526,8 @@ export default class App extends React.Component {
                   .meaningsAndExamples[meaningIndex]
                   .examples
                   .push({
-                    inEnglish: exampleValue.inEnglish.value.replace(/\'/g, "''"),
-                    inVietnamese: exampleValue.inVietnamese.value.replace(/\'/g, "''")
+                    inEnglish: exampleValue.inEnglish.value,
+                    inVietnamese: exampleValue.inVietnamese.value
                   });
               });
             });
