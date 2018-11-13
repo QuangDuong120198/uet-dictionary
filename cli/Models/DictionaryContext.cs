@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Sqlite;
 
 namespace UetDictionaryCli.Models
 {
-    public class DictionaryContext : DbContext
+  public class DictionaryContext : DbContext
+  {
+    public virtual DbSet<Word> Words { get; set; }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        public virtual DbSet<Word> Words { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=dictionary.db");
-        }
+      optionsBuilder.UseSqlite("Data Source=dictionary.db");
     }
+  }
 }

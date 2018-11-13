@@ -11,6 +11,8 @@ Tuy bài tập yêu cầu sử dụng **Java**, song vì quen với và thích *
 
 ### Hai phiên bản
 
+* [Cơ sở dữ liệu](./docs/database.md)
+
 * [Từ điển phiên bản dòng lệnh](./docs/cli/index.md)
 
 * [Từ điển trên nền web](./docs/web/index.md)
