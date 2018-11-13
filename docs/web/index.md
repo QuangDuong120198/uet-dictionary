@@ -22,17 +22,17 @@ dotnet run
 
 ## Giao diện đồ họa, hướng dẫn sử dụng
 
-![Tổng quan giao diện](../images/ui-overview.png)
+![Tổng quan giao diện](../images/ui-overview.PNG)
 
 * Cột màu tím bên trái chứa thanh tìm kiếm và danh sách các từ có trong từ điển. Gõ vào thanh tìm kiếm sẽ lọc từ điển.
 * Nút tròn có dấu cộng dùng để thêm từ mới, hay đúng hơn là nó sẽ mở modal box chứa form yêu cầu điền dữ liệu từ mới.
 
-![Hiển thị nội dung từ](../images/ui-display-word.png)
+![Hiển thị nội dung từ](../images/ui-display-word.PNG)
 
 * Click vào từ ở cột bên trái để xem toàn bộ nội dung.
 * Lúc này có thể xem nội dung, nghe phát âm, đóng nội dung, sửa hoặc xóa.
 
-![Form](../images/ui-form.png)
+![Form](../images/ui-form.PNG)
 
 * Dựa vào cấu trúc bảng `Words` và cấu trúc **JSON** của cột `Content`, form điền dữ liệu sẽ trông như hình trên.
 
