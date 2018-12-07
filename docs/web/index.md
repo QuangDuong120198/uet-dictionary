@@ -12,6 +12,8 @@ cd /path/to/repo/web
 dotnet ef database update
 # Compile ra bin/ và obj/
 dotnet build
+# Cài đặt các thư viện frontend
+bower install bootstrap-css-only#3.3.7 fontawesome#4.7.0 snackbar
 ```
 * Chạy ứng dụng
 ```shell
@@ -43,7 +45,7 @@ dotnet run
 ```shell
 # Di chuyển đến thư mục web/wwwroot
 # bower
-bower install bootstrap-css-only fontawesome snackbar
+bower install bootstrap-css-only#3.3.7 fontawesome#4.7.0 snackbar
 # npm
 npm i --save-dev
 # webpack
@@ -63,7 +65,8 @@ npm run build
   <EditModal />
 </App>
 ```
-* `state` được quản lý bởi `class App`, "đổ xuống" các component con thông qua `props`. Cấu trúc của `state`:
+* `state` được quản lý bởi `class App`, "đổ xuống" các component con thông qua `props`.
+* Cấu trúc của `state`:
 ```js
 // value của các key trong object sau là mặc định
 this.state = {

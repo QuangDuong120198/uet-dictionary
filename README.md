@@ -4,8 +4,8 @@ Bài tập lớn môn *"Lập trình hướng đối tượng"*: *Làm ứng d�
 Tuy bài tập yêu cầu sử dụng **Java**, song vì quen với và thích **C#** hơn nên mình làm bằng **C#**. Hai phiên bản của từ điển bao gồm: *dòng lệnh* và *web*. Trong đó, phiên bản dòng lệnh là bài tập bắt buộc, còn phiên bản web thực ra phải là giao diện đồ họa (nhưng không bắt buộc) nên mình làm để cho vui, để học cách sử dụng **ASP.NET core**.
 
 ## Yêu cầu của ứng dụng
-* **.NET core**.
-* **nodejs**, **npm**.
+* **.NET core**, [link đownload](https://dotnet.microsoft.com/download).
+* **nodejs**, **npm**, [link download](https://nodejs.org/en/download/).
 
 ## Cài đặt, mô tả, chức năng
 
