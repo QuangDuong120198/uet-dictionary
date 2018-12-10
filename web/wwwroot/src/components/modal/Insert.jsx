@@ -51,7 +51,7 @@ export default class InsertModal extends React.Component {
                     <Row key={currentTypeIndex} className="show-grid">
                       <Col xs={12}>
                         <Panel bsStyle="primary" style={{ marginTop: 15 }}>
-                          <Panel.Heading>
+                          <Panel.Heading className="transparent">
                             <label>Loại từ</label>
                             <button
                               type="button"
@@ -73,7 +73,7 @@ export default class InsertModal extends React.Component {
                               currentTypeValue.meaningsAndExamples.map((currentMeaningAndExampleValue, currentMeaningAndExampleIndex, meaningsAndExamplesArray) => {
                                 return (
                                   <Panel key={currentMeaningAndExampleIndex} bsStyle="info" style={{ marginTop: 15 }}>
-                                    <Panel.Heading>
+                                    <Panel.Heading className="transparent">
                                       <label>Dịch nghĩa</label>
                                       <button
                                         type="button"
@@ -87,7 +87,7 @@ export default class InsertModal extends React.Component {
                                       <input type="text" className="form-control" value={currentMeaningAndExampleValue.meaning.value} onChange={(event) => { this.props.handleWordMeaningChange(currentTypeIndex, currentMeaningAndExampleIndex, event); }} />
                                       <div className="text-danger">{currentMeaningAndExampleValue.meaning.message}</div>
                                       <Panel bsStyle="success" style={{ marginTop: 15 }}>
-                                        <Panel.Heading>
+                                        <Panel.Heading className="transparent">
                                           <label>Các ví dụ</label>
                                         </Panel.Heading>
                                         <Panel.Body>
@@ -95,8 +95,8 @@ export default class InsertModal extends React.Component {
                                             currentMeaningAndExampleValue.examples.map((currentExampleValue, currentExampleIndex, exampleArray) => {
                                               return (
                                                 <Panel key={currentExampleIndex} style={{ marginTop: 15 }}>
-                                                  <Panel.Heading>
-                                                    <label>{currentExampleIndex + 1}</label>
+                                                  <Panel.Heading className="transparent">
+                                                    <label>({currentExampleIndex + 1})</label>
                                                     <button
                                                       type="button" className="close"
                                                       onClick={() => {
