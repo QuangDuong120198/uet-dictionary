@@ -11,71 +11,80 @@ using UetDictionaryWeb.Models;
 
 namespace UetDictionaryWeb.Controllers
 {
-  public class HomeController : Controller
-  {
-    protected DictionaryContext db;
-    public HomeController()
+    public class HomeController : Controller
     {
-      db = new DictionaryContext();
-    }
-    public IActionResult Index()
-    {
-      return View();
-    }
-    public IActionResult GetDictionary()
-    {
-      return new JsonResult(db.Words.OrderBy(word => word.InEnglish));
-    }
-    public int InsertWord()
-    {
-      using(StreamReader reader = new StreamReader(Request.Body))
-      {
-        string jsonString = reader.ReadToEnd();
-
-        Word jsonObject = JsonConvert.DeserializeObject<Word>(jsonString);
-        Word item = new Word(jsonObject.InEnglish, jsonObject.Pronunciation, jsonObject.Content);
-
-        db.Words.Add(item);
-
-        return db.SaveChanges();
-      }
-    }
-    public int EditWord()
-    {
-      using(StreamReader reader = new StreamReader(Request.Body))
-      {
-        string jsonString = reader.ReadToEnd();
-
-        Word jsonObject = JsonConvert.DeserializeObject<Word>(jsonString);
-
-        Word item = db.Words.Where(word => word.ID == jsonObject.ID).FirstOrDefault();
-        if (item != null) {
-          item.InEnglish = jsonObject.InEnglish;
-          item.Pronunciation = jsonObject.Pronunciation;
-          item.Content = jsonObject.Content;
-          return db.SaveChanges();
-        } else {
-          return 0;
+        protected DictionaryContext Db;
+        public HomeController()
+        {
+            Db = new DictionaryContext();
         }
-      }
-    }
+        public IActionResult Index()
+        {
+            return View();
+        }
 
-    public int RemoveWord()
-    {
-      using(StreamReader reader = new StreamReader(Request.Body))
-      {
-        int id = int.Parse(reader.ReadToEnd());
-        Word itemWillBeRemoved = db.Words.Where(word => word.ID == id).FirstOrDefault();
-        db.Words.Remove(itemWillBeRemoved);
-        
-        return db.SaveChanges();
-      }
-    }
+        [HttpGet]
+        public IActionResult GetDictionary()
+        {
+            return new JsonResult(Db.Units);
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-      return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        [HttpPost]
+        public int InsertUnit()
+        {
+            using (StreamReader reader = new StreamReader(Request.Body))
+            {
+                string jsonString = reader.ReadToEnd();
+
+                Unit jsonObject = JsonConvert.DeserializeObject<Unit>(jsonString);
+                Unit item = new Unit(jsonObject.Word, jsonObject.Content);
+
+                Db.Units.Add(item);
+
+                return Db.SaveChanges();
+            }
+        }
+
+        [HttpPut]
+        public int EditUnit()
+        {
+            using (StreamReader reader = new StreamReader(Request.Body))
+            {
+                string jsonString = reader.ReadToEnd();
+
+                Unit jsonObject = JsonConvert.DeserializeObject<Unit>(jsonString);
+
+                Unit item = Db.Units.FirstOrDefault(Unit => Unit.Id == jsonObject.Id);
+                if (item != null)
+                {
+                    item.Word = jsonObject.Word;
+                    item.Content = jsonObject.Content;
+                    return Db.SaveChanges();
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+        [HttpDelete]
+        public int RemoveUnit()
+        {
+            using (StreamReader reader = new StreamReader(Request.Body))
+            {
+                int id = int.Parse(reader.ReadToEnd());
+                Unit itemWillBeRemoved = Db.Units.Where(Unit => Unit.Id == id).FirstOrDefault();
+                Db.Units.Remove(itemWillBeRemoved);
+
+                return Db.SaveChanges();
+            }
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
     }
-  }
 }
