@@ -73,18 +73,16 @@ this.state = {
   data: [],
   searchInput: "",
   currentWord: {
-    ID: 0,
-    InEnglish: "",
-    Pronunciation: "",
+    Id: 0,
+    Word: "",
     Content: ""
   },
   insertModal: {
     show: false,
     data: {
-      id: 0,
-      inEnglish: { value: "", message: "" },
-      pronunciation: { value: "", message: "" },
-      content: [
+      Id: 0,
+      Word: { value: "", message: "" },
+      Content: [
         {
           type: { value: "", message: "" },
           meaningsAndExamples: [
@@ -105,10 +103,9 @@ this.state = {
   editModal: {
     show: false,
     data: {
-      id: 0,
-      inEnglish: { value: "", message: "" },
-      pronunciation: { value: "", message: "" },
-      content: [
+      Id: 0,
+      Word: { value: "", message: "" },
+      Content: [
         {
           type: { value: "", message: "" },
           meaningsAndExamples: [
@@ -134,4 +131,3 @@ this.state = {
     * `data`: Chứa toàn bộ nội dung của từ điển. Thay đổi khi sửa hoặc thêm từ mới. Cập nhật bằng `AJAX`, thông qua package `axios`.
     * `insertModal`: Chứa dữ liệu của form thêm từ mới khi thêm hoặc sửa. Thuộc tính `value` là nội dung của thẻ input, còn `message` là thông báo lỗi tương ứng. Giá trị của thuộc tính `value` và `message` thay đổi dựa trên sự kiện `onChange`.
     * `editModal`: Lưu nội dung của từ được chọn. Thay đổi khi chọn từ mới. Cấu trúc giống hệt `insertModal`.
-

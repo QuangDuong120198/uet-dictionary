@@ -27,9 +27,8 @@ CREATE TABLE Words (
 );
 -- Đối với phiên bản web
 CREATE TABLE Words (
-  ID integer NOT NULL CONSTRAINT 'PK_Words' PRIMARY KEY,
-  InEnglish text NOT NULL,
-  Pronunciation text NOT NULL,
+  Id integer NOT NULL CONSTRAINT 'PK_Words' PRIMARY KEY,
+  Word text NOT NULL,
   Content text NOT NULL
 );
 ```
@@ -46,7 +45,7 @@ Quy ước đối với người làm ứng dụng này: Cột `Content` của b
     "type": "danh từ",
     "meaningsAndExamples": [
       {
-        "meaning: "",
+        "meaning": "",
         "examples": [
           {
             "inEnglish": "",
@@ -63,11 +62,31 @@ Có thể giải thích cấu trúc trên như sau: Một từ có thể thuộc
 
 ### Lớp thực thể
 
-Để cho tiện trong việc truy vấn, mình sử dụng Entity Framework Core. Đây là một công cụ *ORM*, nó ánh xạ các bảng có trong cơ sở dữ liệu thành các lớp, ta có thể thực hiện truy vấn bằng cách sử dụng các thuộc tính và phương thức của lớp đó thay vì viết các câu truy vấn (database first) hoặc bắt đầu từ một lớp kế thừa từ lớp `DbContext` (lớp đặc biệt này có liên kết với các lớp ánh xạ với bảng), *EF core* sẽ tạo ra cơ sở dữ liệu tương ứng (Code First). Mình sử dụng cơ chế *Code First*. Ưu điểm của *Code First* là dù có mang đi đâu thì cũng có cơ sở dữ liệu - vì nó có thể sinh ra cơ sở dữ liệu.
+Để cho tiện trong việc truy vấn, mình sử dụng **Entity Framework Core**. Đây là một công cụ **ORM**, nó ánh xạ các bảng có trong cơ sở dữ liệu thành các lớp, ta có thể thực hiện truy vấn bằng cách sử dụng các thuộc tính và phương thức của lớp đó thay vì viết các câu truy vấn (database first) hoặc bắt đầu từ một lớp kế thừa từ lớp `DbContext` (lớp đặc biệt này có liên kết với các lớp ánh xạ với bảng), **EF core** sẽ tạo ra cơ sở dữ liệu tương ứng (Code First). Mình sử dụng cơ chế **Code First**. Ưu điểm của **Code First** là dù có mang đi đâu thì cũng có cơ sở dữ liệu - vì nó có thể sinh ra cơ sở dữ liệu từ `DbContext` và các lớp **model** đã tạo.
 
 Lấy ví dụ cho dễ hiểu:
 
-* Các lớp thực thể đại diện cho bảng. Các thuộc tính của lớp thực thể chính là các cột của bảng đó. Ngoài ra có thể thêm các chú thích (trong *C#* gọi là `Annotation`) để can thiệp sâu hơn khi đụng tới các vấn đề như định dạng kiểu dữ liệu, độ dài chuỗi,... Đối với các bảng có khóa ngoại thì phức tạp hơn, bạn có thể đọc ví dụ tại [tài liệu hướng dẫn của Microsoft](https://docs.microsoft.com/en-us/ef/core/modeling/alternate-keys).
-* Tuy nhiên chỉ có đúng các lớp thực thể là chưa đủ, ta còn phải tạo một lớp đại diện cho toàn bộ cơ sở dữ liệu. Lớp này có thuộc tính là các bảng trong cơ sở dữ liệu, sử dụng generic data type. Quan trọng nhất, lớp này thừa kế từ lớp `DbContext`.
+* Các lớp thực thể đại diện cho bảng. Các thuộc tính của lớp thực thể chính là các cột của bảng đó. Ngoài ra có thể thêm các chú thích (trong **C#** gọi là `Annotation`) để can thiệp sâu hơn khi đụng tới các vấn đề như định dạng kiểu dữ liệu, độ dài chuỗi,... Đối với các bảng có khóa ngoại thì phức tạp hơn, bạn có thể đọc ví dụ tại [tài liệu hướng dẫn của Microsoft](https://docs.microsoft.com/en-us/ef/core/modeling/alternate-keys).
+* Tuy nhiên chỉ có đúng các lớp thực thể là chưa đủ, ta còn phải tạo một lớp đại diện cho toàn bộ cơ sở dữ liệu. Lớp này có thuộc tính là các bảng trong cơ sở dữ liệu, sử dụng generic data type `DbSet<T>`. Quan trọng nhất, lớp này thừa kế từ lớp `DbContext`.
 
 Tại cả hai thư mục `cli/` và `web/`, các lớp thực thể và lớp `context` được đặt trong thư mục `Models/`. Thư mục `Migrations/` chứa các lớp giúp thực hiện khởi tạo cơ sở dữ liệu sau khi đã tạo xong các lớp thực thể.
+
+Các lớp trong thư mục `Migrations` sẽ được sinh ra khi chạy lệnh:
+```shell
+# Chú ý tên lớp DbContext phải chứa đầy đủ namespace
+dotnet ef migrations add <Tên của migration> --context <Tên lớp DbContext> --output-dir <Đường dẫn đến thư mục Migrations>
+# Đường dẫn đến thư mục Migrations là không bắt buộc, có thể làm đường dẫn đến thư mục khác
+```
+Khi đã có các file `Migration` thì ta có thể tạo cơ sở dữ liệu với lệnh:
+```shell
+dotnet ef database update [--context <Tên lớp DbContext>]
+```
+
+Ngược lại, để xóa cơ sở dữ liệu thì:
+```shell
+dotnet ef database drop [--context <Tên lớp DbContext>]
+```
+Và chỉ khi cơ sở dữ liệu đã bị xóa, ta mới có thể xóa đi `Migration` đã tạo ra nó:
+```shell
+dotnet ef migrations remove [--context <Tên lớp DbContext>]
+```
