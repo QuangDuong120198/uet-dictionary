@@ -47,7 +47,7 @@ export default class InsertModal extends React.Component {
                                                             onClick={() => { this.props.handleRemoveType(currentTypeIndex); }}
                                                         >
                                                             &times;
-                            </button>
+                                                        </button>
                                                     </Panel.Heading>
                                                     <Panel.Body>
                                                         <input
@@ -69,7 +69,7 @@ export default class InsertModal extends React.Component {
                                                                                 onClick={() => { this.props.handleRemoveMeaning(currentTypeIndex, currentMeaningAndExampleIndex); }}
                                                                             >
                                                                                 &times;
-                                      </button>
+                                                                            </button>
                                                                         </Panel.Heading>
                                                                         <Panel.Body>
                                                                             <input type="text" className="form-control" value={currentMeaningAndExampleValue.meaning.value} onChange={(event) => { this.props.handleMeaningChange(currentTypeIndex, currentMeaningAndExampleIndex, event); }} />
@@ -92,7 +92,7 @@ export default class InsertModal extends React.Component {
                                                                                                             }}
                                                                                                         >
                                                                                                             &times;
-                                                    </button>
+                                                                                                        </button>
                                                                                                     </Panel.Heading>
                                                                                                     <Panel.Body>
                                                                                                         <div>
@@ -123,7 +123,7 @@ export default class InsertModal extends React.Component {
                                                                                         onClick={() => { this.props.handleAddExample(currentTypeIndex, currentMeaningAndExampleIndex); }}
                                                                                     >
                                                                                         Thêm ví dụ
-                                          </Button>
+                                                                                    </Button>
                                                                                 </Panel.Footer>
                                                                             </Panel>
                                                                         </Panel.Body>
@@ -138,7 +138,7 @@ export default class InsertModal extends React.Component {
                                                             onClick={() => { this.props.handleAddMeaning(currentTypeIndex); }}
                                                         >
                                                             Thêm nghĩa
-                            </Button>
+                                                        </Button>
                                                     </Panel.Footer>
                                                 </Panel>
                                             </Col>
@@ -151,7 +151,7 @@ export default class InsertModal extends React.Component {
                                     <div className="text-center">
                                         <Button bsStyle="info" onClick={() => { this.props.handleAddType(); }}>
                                             Thêm loại từ
-                    </Button>
+                                        </Button>
                                     </div>
                                 </Col>
                             </Row>

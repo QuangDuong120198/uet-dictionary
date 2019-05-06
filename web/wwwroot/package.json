@@ -21,23 +21,17 @@
   },
   "homepage": "https://github.com/QuangDuong120198/uet-dictionary#readme",
   "dependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
     "@babel/preset-react": "^7.0.0",
     "axios": "^0.18.0",
-    "babel-loader": "^8.0.4",
-    "css-loader": "^1.0.1",
-    "file-loader": "^2.0.0",
+    "babel-loader": "^8.0.5",
     "node-snackbar": "^0.1.14",
-    "npm": "^6.4.1",
-    "raw-loader": "^0.5.1",
-    "react": "^16.6.0",
+    "react": "^16.8.3",
     "react-bootstrap": "^0.32.4",
-    "react-dom": "^16.6.0",
-    "style-loader": "^0.23.1",
-    "url-loader": "^1.1.2",
-    "webpack": "^4.24.0",
-    "webpack-cli": "^3.1.2"
+    "react-dom": "^16.8.3",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.2"
   }
 }

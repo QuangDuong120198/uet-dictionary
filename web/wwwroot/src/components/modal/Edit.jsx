@@ -139,7 +139,7 @@ export default class EditModal extends React.Component {
                                                         onClick={() => { this.props.handleAddMeaning(typeIndex, true); }}
                                                     >
                                                         Thêm nghĩa
-                            </Button>
+                                                    </Button>
                                                 </Panel.Footer>
                                             </Panel>
                                         </Col>
@@ -152,7 +152,7 @@ export default class EditModal extends React.Component {
                                 <div className="text-center">
                                     <Button bsStyle="info" onClick={() => { this.props.handleAddType(true); }}>
                                         Thêm loại từ
-                    </Button>
+                                    </Button>
                                 </div>
                             </Col>
                         </Row>
