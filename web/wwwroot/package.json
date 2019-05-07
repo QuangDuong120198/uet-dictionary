@@ -2,9 +2,10 @@
   "name": "uet-dictionary-web",
   "version": "1.0.0",
   "description": "a dictionary app, built with asp.net core and react",
-  "main": "./src/index.js",
+  "main": "./src/with-redux/index.js",
   "scripts": {
-    "build": "webpack",
+    "webpack": "webpack",
+    "sass": "sass ./src/style/index.scss ./css/index.css --style=compressed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,11 +28,20 @@
     "@babel/preset-react": "^7.0.0",
     "axios": "^0.18.0",
     "babel-loader": "^8.0.5",
+    "bootstrap": "3",
+    "font-awesome": "4",
     "node-snackbar": "^0.1.14",
     "react": "^16.8.3",
     "react-bootstrap": "^0.32.4",
     "react-dom": "^16.8.3",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.2"
+  },
+  "peerDependencies": {
+    "react-redux": "^7.0.3",
+    "redux": "^4.0.1"
+  },
+  "devDependencies": {
+    "redux-devtools": "^3.5.0"
   }
 }

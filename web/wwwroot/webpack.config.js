@@ -3,7 +3,8 @@ const path = require("path");
 module.exports = {
     mode: "development",
     entry: {
-        "main": "./src/index.js"
+        "no-redux": "./src/no-redux/index.js",
+        "with-redux": "./src/with-redux/index.js"
     },
     output: {
         path: path.resolve(__dirname, "js"),

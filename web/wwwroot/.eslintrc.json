@@ -1,6 +1,7 @@
 {
     "env": {
         "browser": true,
+        "node": true,
         "es6": true
     },
     "extends": "eslint:recommended",
@@ -19,9 +20,15 @@
         "react"
     ],
     "rules": {
+        "no-unused-vars": "off",
+        "no-console": "off",
+        "no-debugger": "off",
+        "no-else-return": "error",
+        "default-case": "error",
         "indent": [
             "error",
-            4
+            4,
+            { "SwitchCase": 1 }
         ],
         "linebreak-style": [
             "error",
@@ -34,6 +41,7 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "switch-colon-spacing": "off"
     }
 }

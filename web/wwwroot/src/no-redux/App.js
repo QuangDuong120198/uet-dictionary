@@ -146,9 +146,9 @@ export default class App extends React.Component {
                             .meaningsAndExamples[meaningIndex]
                             .examples[exampleIndex]
                             = {
-                                inEnglish: { value: exampleValue.inEnglish, message: "" },
-                                inVietnamese: { value: exampleValue.inVietnamese, message: "" }
-                            };
+                                    inEnglish: { value: exampleValue.inEnglish, message: "" },
+                                    inVietnamese: { value: exampleValue.inVietnamese, message: "" }
+                                };
                     });
                 });
             });
