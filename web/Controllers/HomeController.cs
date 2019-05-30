@@ -13,10 +13,10 @@ namespace UetDictionaryWeb.Controllers
 {
     public class HomeController : Controller
     {
-        protected DictionaryContext Db;
+        private DictionaryContext _context;
         public HomeController()
         {
-            Db = new DictionaryContext();
+            _context = new DictionaryContext();
         }
         public IActionResult Index()
         {
@@ -26,7 +26,7 @@ namespace UetDictionaryWeb.Controllers
         [HttpGet]
         public IActionResult GetDictionary()
         {
-            return new JsonResult(Db.Units);
+            return new JsonResult(_context.Units);
         }
 
         [HttpPost]
@@ -39,9 +39,9 @@ namespace UetDictionaryWeb.Controllers
                 Unit jsonObject = JsonConvert.DeserializeObject<Unit>(jsonString);
                 Unit item = new Unit(jsonObject.Word, jsonObject.Content);
 
-                Db.Units.Add(item);
+                _context.Units.Add(item);
 
-                return Db.SaveChanges();
+                return _context.SaveChanges();
             }
         }
 
@@ -54,12 +54,12 @@ namespace UetDictionaryWeb.Controllers
 
                 Unit jsonObject = JsonConvert.DeserializeObject<Unit>(jsonString);
 
-                Unit item = Db.Units.FirstOrDefault(Unit => Unit.Id == jsonObject.Id);
+                Unit item = _context.Units.FirstOrDefault(Unit => Unit.Id == jsonObject.Id);
                 if (item != null)
                 {
                     item.Word = jsonObject.Word;
                     item.Content = jsonObject.Content;
-                    return Db.SaveChanges();
+                    return _context.SaveChanges();
                 }
                 else
                 {
@@ -74,10 +74,10 @@ namespace UetDictionaryWeb.Controllers
             using (StreamReader reader = new StreamReader(Request.Body))
             {
                 int id = int.Parse(reader.ReadToEnd());
-                Unit itemWillBeRemoved = Db.Units.Where(Unit => Unit.Id == id).FirstOrDefault();
-                Db.Units.Remove(itemWillBeRemoved);
+                Unit itemWillBeRemoved = _context.Units.Where(Unit => Unit.Id == id).FirstOrDefault();
+                _context.Units.Remove(itemWillBeRemoved);
 
-                return Db.SaveChanges();
+                return _context.SaveChanges();
             }
         }
 
