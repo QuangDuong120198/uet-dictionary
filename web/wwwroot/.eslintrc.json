@@ -2,7 +2,8 @@
     "env": {
         "browser": true,
         "node": true,
-        "es6": true
+        "es6": true,
+        "commonjs": true
     },
     "extends": [
         "eslint:recommended",
@@ -12,6 +13,7 @@
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -28,16 +30,13 @@
         "no-debugger": "off",
         "no-else-return": "error",
         "default-case": "error",
+        "generator-star-spacing": "error",
         "indent": [
             "error",
             2,
             {
                 "SwitchCase": 1
             }
-        ],
-        "linebreak-style": [
-            "error",
-            "windows"
         ],
         "quotes": [
             "error",
