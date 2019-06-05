@@ -2,7 +2,7 @@
   "name": "uet-dictionary-web",
   "version": "1.0.0",
   "description": "a dictionary app, built with asp.net core and react",
-  "main": "./src/with-redux/index.js",
+  "main": "index.js",
   "scripts": {
     "webpack": "webpack",
     "sass": "sass ./src/style/index.scss ./css/index.css --style=compressed",
@@ -22,26 +22,24 @@
   },
   "homepage": "https://github.com/QuangDuong120198/uet-dictionary#readme",
   "dependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "@babel/preset-react": "^7.0.0",
-    "axios": "^0.18.0",
-    "babel-loader": "^8.0.5",
-    "bootstrap": "3",
-    "font-awesome": "4",
-    "node-snackbar": "^0.1.14",
-    "react": "^16.8.3",
-    "react-bootstrap": "^0.32.4",
-    "react-dom": "^16.8.3",
-    "webpack": "^4.30.0",
-    "webpack-cli": "^3.3.2"
-  },
-  "peerDependencies": {
+    "@babel/polyfill": "^7.4.4",
+    "bootstrap": "^4.3.1",
+    "fontawesome": "^5.6.3",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-redux": "^7.0.3",
-    "redux": "^4.0.1"
+    "reactstrap": "^8.0.0",
+    "redux": "^4.0.1",
+    "redux-saga": "^1.0.2"
   },
   "devDependencies": {
-    "redux-devtools": "^3.5.0"
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2"
   }
 }

@@ -82,3 +82,7 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# Customize
+*.bundle.js
+*.bundle.js.map
