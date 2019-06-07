@@ -30,7 +30,7 @@ namespace UetDictionaryWeb.Controllers
         }
 
         [HttpPost]
-        public int InsertUnit()
+        public IActionResult InsertUnit()
         {
             using (StreamReader reader = new StreamReader(Request.Body))
             {
@@ -41,12 +41,13 @@ namespace UetDictionaryWeb.Controllers
 
                 _context.Units.Add(item);
 
-                return _context.SaveChanges();
+                _context.SaveChanges();
+                return CreatedAtAction(nameof(InsertUnit), item);
             }
         }
 
         [HttpPut]
-        public int EditUnit()
+        public IActionResult EditUnit()
         {
             using (StreamReader reader = new StreamReader(Request.Body))
             {
@@ -59,17 +60,15 @@ namespace UetDictionaryWeb.Controllers
                 {
                     item.Word = jsonObject.Word;
                     item.Content = jsonObject.Content;
-                    return _context.SaveChanges();
+                    _context.SaveChanges();
+                    return Ok();
                 }
-                else
-                {
-                    return 0;
-                }
+                return NotFound();
             }
         }
 
         [HttpDelete]
-        public int RemoveUnit()
+        public IActionResult RemoveUnit()
         {
             using (StreamReader reader = new StreamReader(Request.Body))
             {
@@ -77,7 +76,7 @@ namespace UetDictionaryWeb.Controllers
                 Unit itemWillBeRemoved = _context.Units.Where(Unit => Unit.Id == id).FirstOrDefault();
                 _context.Units.Remove(itemWillBeRemoved);
 
-                return _context.SaveChanges();
+                return Ok();
             }
         }
 

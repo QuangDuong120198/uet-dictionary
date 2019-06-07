@@ -1,4 +1,5 @@
 {
+    "root": true,
     "env": {
         "browser": true,
         "node": true,
@@ -25,12 +26,6 @@
         "react"
     ],
     "rules": {
-        "no-unused-vars": "off",
-        "no-console": "off",
-        "no-debugger": "off",
-        "no-else-return": "error",
-        "default-case": "error",
-        "generator-star-spacing": "error",
         "indent": [
             "error",
             2,
@@ -46,6 +41,12 @@
             "error",
             "always"
         ],
+        "no-unused-vars": "off",
+        "no-console": "off",
+        "no-debugger": "off",
+        "no-else-return": "error",
+        "default-case": "error",
+        "generator-star-spacing": "error",
         "switch-colon-spacing": "off"
     }
 }
